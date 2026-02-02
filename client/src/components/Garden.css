@@ -1,0 +1,115 @@
+.garden {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 24px;
+}
+
+/* Styles for Tablet devices */
+@media only screen and (min-width: 768px) {
+  .garden {
+    max-width: 800px;
+    height: 500px;
+  }
+}
+
+/* Styles for Desktop devices */
+@media only screen and (min-width: 1440px) {
+  .garden {
+    max-width: 1440px;
+    height: 850px;
+  }
+}
+
+/* 🌧 */
+.rain-drop {
+  position: absolute;
+  width: 2px;
+  height: 10px;
+  background: #00f;
+  opacity: 0.8;
+  border-radius: 50%;
+  animation: fall 2s linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh); /* падає на всю висоту екрану */
+    opacity: 0;
+  }
+}
+
+/* 🌳 Дерево */
+.tree {
+  position: absolute;
+  bottom: -10px;
+  right: 10px; /* зліва відносно контейнера */
+  max-height: 600px;
+  height: auto;
+  z-index: 10; /* поверх фону і квітів */
+  transition: all 0.5s ease-in-out; /* плавна зміна при зміні stage */
+}
+
+/* Різні етапи росту */
+.tree.stage-1 {
+  max-height: 400px;
+}
+
+.tree.stage-2 {
+  max-height: 600px;
+}
+
+.tree.stage-3 {
+  max-height: 800px;
+}
+
+.sun {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  width: 110px;
+  height: 110px;
+  background: yellow;
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(255, 255, 0, 0.8);
+}
+
+.cloud {
+  position: absolute;
+  top: 0px; /* трохи вище */
+  width: 120px;
+  height: 50px;
+  border-radius: 50px;
+  opacity: 0.7;
+  z-index: 5; /* поверх фону, але під деревом */
+}
+
+.c1 {
+  left: 20px;
+}
+
+.c2 {
+  left: 80px;
+}
+
+.gray {
+  filter: grayscale(70%);
+}
+
+.beaver {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  width: 60px;
+  height: 40px;
+  background: sienna;
+  border-radius: 20px;
+}

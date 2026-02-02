@@ -1,0 +1,102 @@
+.article-container {
+  margin: 60px auto;
+  padding: 60px 100px 60px 100px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Inter", sans-serif;
+}
+
+.article-title {
+  font-size: 50px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #1f2937;
+  text-align: center;
+}
+
+/* Картинка зліва, текст обтікає її */
+.article-image {
+  float: left;
+  width: 60%;
+  margin-right: 60px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.article-text {
+  width: 100%;
+  text-align: justify;
+  color: #13381a;
+  line-height: 1.7;
+  margin-bottom: 45px;
+}
+
+/* Заголовки в тексті */
+.article-text h2 {
+  font-size: 36px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  color: #111827;
+  font-weight: bold;
+}
+
+.article-text h3 {
+  font-size: 28px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.article-text p {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.article-text ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.article-text li {
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.back-button {
+  display: block;
+  margin: 40px auto 0;
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #134816;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #237627;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.2rem;
+  color: #6b7280;
+}
+
+/* Мобільна версія – картинка на всю ширину */
+@media (max-width: 768px) {
+  .article-image {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}
