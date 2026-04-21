@@ -19,6 +19,8 @@ import tree3 from "./tree3.png";
 
 import war_children from "./war_children.jpg";
 
+import blob_tree from "./blob_tree.jpg"
+
 export const assets = {
   arrow_icon,
   lock_icon,
@@ -37,4 +39,5 @@ export const assets = {
   tree2,
   tree3,
   war_children,
+  blob_tree,
 };

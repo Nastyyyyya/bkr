@@ -8,12 +8,8 @@ const Header = () => {
   const navigate = useNavigate(); // ⬅️ ДОДАЛИ
 
   return (
-    <section className="section-hero relative w-full h-screen overflow-hidden">
+    <section className="section-hero relative w-full h-screen overflow-hidden mb-32">
       {/* Основний фон */}
-      <div
-        className="hero-wrapper"
-        style={{ backgroundImage: `url(${assets.bg})` }}
-      ></div>
 
       {/* Ефект поверх лівих 70% */}
       <div

@@ -134,15 +134,16 @@ img {
 }
 
 .item-inf-a {
-  width: 141px;
-  height: 45px;
-  padding: 13px 32px;
+  display: inline-block; /* дозволяє ширину по тексту */
+  white-space: nowrap; /* заборона переносу тексту */
+  padding: 14px 32px; /* можна залишити твої падінги */
   border-radius: 60px;
   background-color: #354024;
   font-size: 16px;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: #fafafa;
+  text-align: center; /* текст по центру */
 }
 
 .item-inf-a:hover,
@@ -250,9 +251,6 @@ img {
 }
 /* style for desctop  */
 @media screen and (min-width: 1440px) {
-  .projects {
-    margin-bottom: 164px;
-  }
   .project-container {
     margin-bottom: 64px;
   }
@@ -401,7 +399,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 50%; /* ліворуч 70% секції */
+  width: 40%; /* ліворуч 70% секції */
   height: 100%;
   background-image: url(""); /* через React вставимо bg_effect.png */
   background-repeat: no-repeat;

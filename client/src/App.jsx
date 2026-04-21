@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import EmailVerify from "./pages/EmailVerify.jsx";
@@ -15,8 +15,18 @@ import ArticlePage from "./pages/ArticlePage";
 import TestStart from "./pages/TestStart";
 import TestQuestions from "./pages/TestQuestions";
 import TestResult from "./pages/TestResult";
+import ExercisesPage from "./pages/ExercisesPage";
+import ExerciseDetail from "./pages/ExerciseDetail";
+import ChildOverview from "./pages/ChildOverview.jsx";
+import LuscherTest from "./pages/LuscherTest";
+
+import { AppContext } from "./context/AppContext.jsx"; // Додано контекст
 
 const App = () => {
+  const { userData } = useContext(AppContext);
+  // Використовуємо ID з userData, якщо він завантажений, інакше null
+  const currentUserId = userData?._id || null;
+
   return (
     <div>
       <ToastContainer />
@@ -27,6 +37,7 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/add-child" element={<AddChild />} />
         <Route path="/my-children" element={<MyChildren />} />
+        <Route path="/child/:id" element={<ChildOverview />} />
         <Route path="/child-home/:childId" element={<ChildHome />} />
         <Route path="/child-chatbot/:childId" element={<ChildChatBot />} />
         <Route path="/articles" element={<Articles />} />
@@ -34,6 +45,12 @@ const App = () => {
         <Route path="/test/start" element={<TestStart />} />
         <Route path="/test/questions" element={<TestQuestions />} />
         <Route path="/test/result" element={<TestResult />} />
+        <Route path="/exercises" element={<ExercisesPage />} />
+        <Route path="/exercises/:id" element={<ExerciseDetail />} />
+        <Route
+          path="/luscher-test"
+          element={<LuscherTest userId={currentUserId} />}
+        />
       </Routes>
     </div>
   );

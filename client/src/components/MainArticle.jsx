@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Keyboard } from "swiper/modules";
+import { useNavigate } from "react-router-dom";
 
 import { assets } from "../assets/assets";
 import ArrowLeft from "../assets/arrow-narrow-left.svg";
@@ -8,28 +9,31 @@ import ArrowRight from "../assets/arrow-narrow-right.svg";
 
 const MainArticle = () => {
   const swiperRef = useRef(null);
+  const navigate = useNavigate();
 
+  // 🔹 Всі статті тепер беруться з бази через articleId
   const projects = [
     {
       id: 1,
       title: "Корисні статті",
       description:
         "Як впоратися зі страхом повітряної тривоги та допомогти дитині",
-      link: "https://babyfixie.github.io/DevCore16/",
+      articleId: "69823b4ea88247899506b38e",
       image: assets.woman_holds_baby,
     },
     {
       id: 2,
       title: "Корисні статті",
       description: "Ознаки, що вказують на потребу психологічної допомоги",
-      link: "https://github.com/babyfixie/DevCore16",
+      articleId: "NEW_ARTICLE_ID_FROM_MONGO", // тут вставляємо id твоєї другої статті
       image: assets.truvoga_article,
     },
     {
       id: 3,
       title: "Корисні статті",
-      description: "Секрет спокійного батьківства",
-      link: "https://github.com/babyfixie/DevCore16",
+      description:
+        "Як впливати на поведінку дитини розумно та без шкоди для психіки",
+      articleId: "6982406a6f321e6f7b9e0c1f",
       image: assets.happy_family,
     },
   ];
@@ -69,14 +73,13 @@ const MainArticle = () => {
 
                   <p className="item-inf-p">{project.description}</p>
 
-                  <a
-                    href={project.link}
+                  {/* 🔹 Всі статті тепер переходять всередині сайту */}
+                  <button
                     className="item-inf-a"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    onClick={() => navigate(`/articles/${project.articleId}`)}
                   >
                     Читати далі
-                  </a>
+                  </button>
                 </div>
 
                 <div className="project-item-img">

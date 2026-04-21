@@ -2,13 +2,15 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import MainArticle from "../components/MainArticle";
+import ExercisePreview from "../components/ExercisePreview";
 
 const ResetPassword = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div>
       <Navbar />
       <Header />
       <MainArticle />
+      <ExercisePreview />
     </div>
   );
 };
