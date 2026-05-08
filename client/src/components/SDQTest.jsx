@@ -27,13 +27,21 @@ const SDQTest = ({ childId, backendUrl }) => {
   };
 
   const calculateFinalScores = () => {
-    const scores = { emotional: 0, conduct: 0, hyperactivity: 0, peer: 0, prosocial: 0 };
+    const scores = {
+      emotional: 0,
+      conduct: 0,
+      hyperactivity: 0,
+      peer: 0,
+      prosocial: 0,
+    };
     testData.questions.forEach((q, idx) => {
-      const val = answers[idx]; 
-      let points = (val === 1) ? 1 : (q.reverse ? (val === 0 ? 2 : 0) : (val === 2 ? 2 : 0));
+      const val = answers[idx];
+      let points =
+        val === 1 ? 1 : q.reverse ? (val === 0 ? 2 : 0) : val === 2 ? 2 : 0;
       scores[q.scale] += points;
     });
-    const total = scores.emotional + scores.conduct + scores.hyperactivity + scores.peer;
+    const total =
+      scores.emotional + scores.conduct + scores.hyperactivity + scores.peer;
     return { ...scores, total };
   };
 
@@ -54,33 +62,54 @@ const SDQTest = ({ childId, backendUrl }) => {
     }
   };
 
-  if (loading) return <div className="p-10 text-center font-bold text-indigo-500">Готуємо питання...</div>;
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center p-20 text-[#2c4832]">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#2c4832]/10 border-t-[#2c4832] mb-4"></div>
+        <p className="font-black uppercase tracking-widest text-xs">
+          Готуємо питання...
+        </p>
+      </div>
+    );
+
   if (!testData) return null;
 
+  const progress = ((currentIndex + 1) / testData.questions.length) * 100;
+
   return (
-    <div className="w-full max-w-4xl mx-auto p-8 bg-white rounded-3xl shadow-xl mt-10 border border-indigo-50">
+    <div className="w-full max-w-4xl mx-auto bg-[#f8f9f5] p-8 sm:p-12 rounded-[40px] shadow-[0_20px_50px_rgba(44,72,50,0.08)] border border-white mt-10 select-none">
       {!isFinished ? (
         <div className="flex flex-col items-center">
-          <div className="w-full bg-gray-100 h-3 rounded-full mb-8">
-            <div 
-              className="bg-gradient-to-r from-indigo-400 to-indigo-600 h-3 rounded-full transition-all duration-500" 
-              style={{ width: `${((currentIndex + 1) / testData.questions.length) * 100}%` }}
-            ></div>
+          {/* Progress Bar */}
+          <div className="w-full flex items-center gap-4 mb-12">
+            <div className="flex-1 bg-white h-4 rounded-full overflow-hidden border border-[#2c4832]/5 shadow-inner">
+              <div
+                className="bg-[#2c4832] h-full rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+            <span className="text-[#2c4832] font-black text-xs tracking-tighter w-12 text-right">
+              {Math.round(progress)}%
+            </span>
           </div>
-          
-          <p className="text-2xl font-bold text-gray-800 text-center mb-10">
-            {testData.questions[currentIndex].text}
-          </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+          {/* Question Box */}
+          <div className="min-h-[160px] flex items-center justify-center w-full px-4 mb-12 bg-white rounded-[30px] border border-[#2c4832]/5 shadow-sm">
+            <h3 className="text-xl sm:text-2xl font-black text-[#2c4832] text-center leading-snug">
+              {testData.questions[currentIndex].text}
+            </h3>
+          </div>
+
+          {/* Answer Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl">
             {["Невірно", "Частково", "Вірно"].map((label, idx) => (
               <button
                 key={idx}
                 onClick={() => handleAnswer(idx)}
-                className={`py-5 rounded-2xl font-bold border-2 transition-all ${
-                  answers[currentIndex] === idx 
-                    ? "bg-indigo-600 border-indigo-600 text-white scale-105" 
-                    : "border-gray-100 text-gray-500 hover:border-indigo-200"
+                className={`py-6 rounded-2xl font-black text-lg transition-all duration-300 border-2 ${
+                  answers[currentIndex] === idx
+                    ? "bg-[#2c4832] border-[#2c4832] text-white scale-105 shadow-xl"
+                    : "bg-white border-transparent text-[#2c4832]/90 hover:border-[#2c4832]/20 hover:text-[#2c4832]"
                 }`}
               >
                 {label}
@@ -88,24 +117,34 @@ const SDQTest = ({ childId, backendUrl }) => {
             ))}
           </div>
 
+          {/* Navigation Button */}
           <button
             onClick={handleNext}
             disabled={answers[currentIndex] === undefined}
-            className="mt-12 px-16 py-4 bg-[#354024] text-white rounded-full font-bold disabled:opacity-20 hover:brightness-110 active:scale-95"
+            className="mt-16 px-20 py-5 bg-[#2c4832] text-white rounded-full font-black text-xl uppercase tracking-widest shadow-[0_15px_30px_rgba(44,72,50,0.2)] disabled:opacity-30 disabled:grayscale hover:bg-[#1a2e20] active:scale-95 transition-all"
           >
-            {currentIndex + 1 === testData.questions.length ? "Готово!" : "Далі"}
+            {currentIndex + 1 === testData.questions.length
+              ? "Завершити"
+              : "Далі →"}
           </button>
+
+          <p className="mt-6 text-[#2c4832] text-[10px] font-black uppercase tracking-[0.2em]">
+            Питання {currentIndex + 1} з {testData.questions.length}
+          </p>
         </div>
       ) : (
-        <div className="text-center py-10">
-          <div className="text-6xl mb-6">🌈</div>
-          <h2 className="text-3xl font-black text-indigo-900 mb-4">Ти молодець!</h2>
-          <p className="text-gray-500 text-lg max-w-md mx-auto">
-            Дякую за твої відповіді. Твій сад став ще красивішим, а Beaver тепер знає, як тобі допомогти!
+        /* Success Screen */
+        <div className="text-center py-12 flex flex-col items-center animate-in fade-in zoom-in duration-700">
+          <h2 className="text-4xl font-black text-[#2c4832] mb-6 uppercase tracking-tight">
+            Ти молодець!
+          </h2>
+          <p className="text-[#2c4832]/60 text-lg font-medium max-w-md mx-auto leading-relaxed px-4">
+            Дякую за твої відповіді. Тепер ми краще розуміємо, як зробити твій
+            шлях цікавішим та легшим!
           </p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
-            className="mt-10 px-12 py-4 bg-indigo-100 text-indigo-700 rounded-full font-bold hover:bg-indigo-200"
+            className="mt-12 px-14 py-5 bg-white text-[#2c4832] border-2 border-[#2c4832] rounded-full font-black text-lg hover:bg-[#2c4832] hover:text-white transition-all shadow-sm active:scale-95"
           >
             Повернутися до ігор
           </button>

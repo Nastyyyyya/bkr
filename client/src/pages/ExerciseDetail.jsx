@@ -83,7 +83,7 @@ const ExerciseDetail = () => {
         <article className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-[#354024]/5 border border-[#354024]/5">
           <div className="prose prose-stone max-w-none">
             {/* Використання whitespace-pre-line для збереження абзаців */}
-            <p className="text-[#354024]/80 text-lg leading-[1.8] font-light whitespace-pre-line first-letter:text-5xl first-letter:font-serif first-letter:mr-3 first-letter:float-left first-letter:text-[#354024]">
+            <p className="text-[#354024]/80 text-lg leading-[1.8] font-light whitespace-pre-line text-center">
               {exercise.fullText}
             </p>
           </div>

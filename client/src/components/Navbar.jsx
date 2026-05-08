@@ -71,9 +71,9 @@ const Navbar = () => {
           {/* Навігаційні посилання тільки для великих екранів */}
           {!isMobileRange && (
             <div className="nav-links">
+              <span onClick={() => navigate("/")}>Головна</span>
               <span onClick={() => navigate("/articles")}>Статті</span>
-              <span onClick={() => navigate("/forum")}>Форум</span>
-              <span onClick={() => navigate("/self-help")}>Самодопомога</span>
+              <span onClick={() => navigate("/exercises")}>Самодопомога</span>
             </div>
           )}
 

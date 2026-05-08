@@ -73,7 +73,7 @@ const AffectiveGoNoGoKeyboard = ({ childId, backendUrl }) => {
 
       if (backendUrl && childId) {
         try {
-          await fetch(`${backendUrl}/api/child-go-no-go/${childId}`, {
+          await fetch(`${backendUrl}/api/child-go-no-go/save/${childId}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -134,6 +134,11 @@ const AffectiveGoNoGoKeyboard = ({ childId, backendUrl }) => {
   // Обробка пробілу
   const handleKeyDown = useCallback(
     (e) => {
+      // ЗАПОБІГАННЯ СКРОЛУ ПРИ НАТИСКАННІ ПРОБІЛУ
+      if (e.code === "Space") {
+        e.preventDefault();
+      }
+
       if (
         e.code !== "Space" ||
         gameState !== "playing" ||
@@ -211,24 +216,44 @@ const AffectiveGoNoGoKeyboard = ({ childId, backendUrl }) => {
         }
         .circle-active { animation: super-pulse 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
       `}</style>
-
       {gameState === "ready" && (
-        <div className="text-center bg-gray-50 p-10 rounded-[30px] shadow-sm max-w-md border border-gray-100">
-          <h1 className="text-3xl font-black text-gray-800 mb-4">
-            Перевір свою увагу! 🚀
-          </h1>
-          <p className="text-gray-500 mb-8 text-lg">
-            Побачиш <span className="text-green-500 font-bold">зелений</span> —
-            тисни Пробіл.
-            <br />
-            На <span className="text-red-500 font-bold">червоний</span> — замри.
-          </p>
-          <button
-            onClick={startGame}
-            className="bg-black text-white px-14 py-5 rounded-full font-bold text-xl hover:bg-gray-800 transition-all active:scale-95 shadow-xl"
-          >
-            ПОЧАТИ
-          </button>
+        <div className="flex flex-col items-center justify-center w-full max-w-2xl mx-auto bg-[#f8f9f5] p-10 sm:p-16 rounded-[50px] shadow-[0_20px_50px_rgba(44,72,50,0.1)] border border-white relative overflow-hidden">
+          {/* Декоративні елементи на фоні */}
+          <div className="absolute top-[-20px] right-[-20px] w-32 h-32 bg-emerald-100/50 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-[-20px] left-[-20px] w-32 h-32 bg-rose-100/50 rounded-full blur-3xl"></div>
+
+          <div className="relative z-10 text-center">
+            <h1 className="text-4xl sm:text-5xl font-black text-[#2c4832] mb-6 uppercase tracking-tight leading-none">
+              Перевір свою <br />{" "}
+              <span className="text-emerald-600">увагу!</span> 🚀
+            </h1>
+
+            <div className="bg-white/60 backdrop-blur-md p-8 rounded-[35px] border border-white shadow-inner mb-10">
+              <p className="text-[#2c4832]/80 text-lg sm:text-xl font-medium leading-relaxed">
+                Побачиш{" "}
+                <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-xl font-black mx-1">
+                  ЗЕЛЕНИЙ
+                </span>{" "}
+                — тисни Пробіл.
+              </p>
+              <div className="h-4"></div>
+              <p className="text-[#2c4832]/80 text-lg sm:text-xl font-medium leading-relaxed">
+                На{" "}
+                <span className="bg-rose-100 text-rose-600 px-3 py-1 rounded-xl font-black mx-1">
+                  ЧЕРВОНИЙ
+                </span>{" "}
+                — замри і чекай.
+              </p>
+            </div>
+
+            <button
+              onClick={startGame}
+              className="group relative bg-[#2c4832] text-white px-20 py-6 rounded-[30px] font-black text-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_40px_rgba(44,72,50,0.3)] active:scale-95"
+            >
+              <span className="relative z-10">ПОЧАТИ ГРУ</span>
+              <div className="absolute inset-0 bg-white/10 rounded-[30px] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </button>
+          </div>
         </div>
       )}
 

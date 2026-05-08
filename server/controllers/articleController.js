@@ -3,7 +3,7 @@ import Article from "../models/Article.js";
 export const getArticles = async (req, res) => {
   try {
     const page = Number(req.query.page) || 1;
-    const limit = 3;
+    const limit = 4;
     const skip = (page - 1) * limit;
 
     const articles = await Article.find()

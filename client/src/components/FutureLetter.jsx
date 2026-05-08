@@ -4,13 +4,13 @@ import axios from "axios";
 
 const FutureLetter = ({ childId, backendUrl }) => {
   const [text, setText] = useState("");
-  const [isLocked, setIsLocked] = useState(true); // За замовчуванням закрито
+  const [isLocked, setIsLocked] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
   const [oldLetter, setOldLetter] = useState(null);
   const [showOldLetter, setShowOldLetter] = useState(false);
 
   const today = new Date();
-  const isSunday = today.getDay() === 0; // 0 - це неділя
+  const isSunday = today.getDay() === 0;
 
   const checkStatus = useCallback(async () => {
     try {
@@ -28,22 +28,18 @@ const FutureLetter = ({ childId, backendUrl }) => {
 
         if (isSunday) {
           if (isWrittenToday) {
-            // Сьогодні неділя, але лист уже написаний -> Закриваємо
             setIsLocked(true);
             setShowOldLetter(false);
           } else {
-            // Сьогодні неділя і лист старий -> Відкриваємо для читання
             setIsLocked(false);
             setShowOldLetter(true);
           }
         } else {
-          // Сьогодні не неділя -> Завжди закрито
           setIsLocked(true);
           setShowOldLetter(false);
         }
       } else {
-        // Листів взагалі немає в базі
-        setIsLocked(!isSunday); // Відкриваємо тільки якщо сьогодні неділя
+        setIsLocked(!isSunday);
         setShowOldLetter(false);
       }
     } catch (error) {
@@ -66,7 +62,6 @@ const FutureLetter = ({ childId, backendUrl }) => {
       );
 
       if (res.data.success) {
-        // Після успіху відразу міняємо стан, щоб не чекати перезавантаження
         setTimeout(() => {
           setIsLocked(true);
           setIsAnimating(false);
@@ -81,29 +76,37 @@ const FutureLetter = ({ childId, backendUrl }) => {
   };
 
   return (
-    <div className="flex flex-col items-center bg-white p-10 rounded-[40px] shadow-2xl w-full max-w-2xl mx-auto my-10 border-4 border-indigo-100">
-      <h3 className="text-2xl font-black text-indigo-900 mb-6 uppercase text-center">
-        {isLocked ? "Твій секрет збережено 🤫" : "Недільне послання ✍️"}
-      </h3>
+    <div className="flex flex-col items-center bg-[#f8f9f5] p-8 sm:p-12 rounded-[40px] shadow-[0_20px_50px_rgba(44,72,50,0.08)] w-full max-w-2xl mx-auto my-10 border border-white select-none overflow-hidden">
+      {/* Header */}
+      <div className="text-center mb-10">
+        <h3 className="text-2xl sm:text-3xl font-black text-[#2c4832] mb-3 uppercase tracking-tight">
+          {isLocked ? "Твій твоє послання збережено" : "Недільне послання"}
+        </h3>
+        <p className="text-[#2c4832]/50 font-medium text-sm text-center">
+          {isLocked
+            ? "Конверт надійно запечатаний"
+            : "Напиши собі кілька теплих слів"}
+        </p>
+      </div>
 
-      {/* Показуємо старий лист тільки якщо неділя і він ще не "прочитаний" для написання нового */}
+      {/* Old Letter View */}
       <AnimatePresence>
         {isSunday && oldLetter && showOldLetter && !isLocked && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="mb-6 p-6 bg-yellow-50 border-2 border-dashed border-yellow-300 rounded-3xl w-full"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="mb-10 p-8 bg-[#fff9db] border-2 border-dashed border-[#f1c40f]/30 rounded-[30px] w-full shadow-sm relative"
           >
-            <p className="text-xs text-yellow-600 font-bold uppercase mb-1">
-              Лист із минулого:
-            </p>
-            <p className="text-gray-800 italic text-lg leading-relaxed">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#f1c40f] text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+              Привіт із минулого
+            </div>
+            <p className="text-[#2c4832] italic text-lg leading-relaxed text-center font-medium">
               "{oldLetter.content}"
             </p>
             <button
               onClick={() => setShowOldLetter(false)}
-              className="mt-3 text-indigo-600 font-bold text-sm underline cursor-pointer hover:text-indigo-800"
+              className="mt-6 w-full py-3 bg-[#2c4832] text-white font-black text-xs uppercase tracking-widest rounded-xl hover:bg-[#1a2e20] transition-colors"
             >
               Прочитав! Написати новий →
             </button>
@@ -111,24 +114,27 @@ const FutureLetter = ({ childId, backendUrl }) => {
         )}
       </AnimatePresence>
 
+      {/* ENVELOPE VISUAL */}
       <div
-        className="relative w-[300px] h-[220px] flex items-end justify-center"
+        className="relative w-[300px] h-[220px] flex items-end justify-center mb-4"
         style={{ perspective: "1200px" }}
       >
-        <div className="absolute bottom-0 w-full h-[180px] bg-indigo-200 rounded-b-3xl shadow-inner"></div>
+        {/* Back of envelope */}
+        <div className="absolute bottom-0 w-full h-[180px] bg-[#e1e4d8] rounded-b-3xl shadow-inner border border-[#2c4832]/5"></div>
 
+        {/* Paper/Letter */}
         <AnimatePresence>
           {!isLocked && !showOldLetter && (
             <motion.div
               initial={{ y: -120, opacity: 0 }}
-              animate={{ y: -20, opacity: 1 }}
-              exit={{ y: 80, opacity: 0, scale: 0.5 }}
-              transition={{ duration: 0.8 }}
-              className="absolute z-10 w-[260px] h-[170px] bg-white shadow-2xl rounded-lg p-4 top-0 border-t-4 border-indigo-400"
+              animate={{ y: -25, opacity: 1 }}
+              exit={{ y: 100, opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.8, ease: "circOut" }}
+              className="absolute z-10 w-[270px] h-[180px] bg-white shadow-2xl rounded-xl p-5 top-0 border-t-[6px] border-[#2c4832]"
             >
               <textarea
-                className="w-full h-full border-none outline-none resize-none text-indigo-900 font-medium bg-transparent"
-                placeholder="Напиши собі щось на наступний тиждень..."
+                className="w-full h-full border-none outline-none resize-none text-[#2c4832] font-bold bg-transparent placeholder-[#2c4832]/20 text-sm italic"
+                placeholder="Напиши щось важливе собі..."
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 disabled={isAnimating}
@@ -137,50 +143,64 @@ const FutureLetter = ({ childId, backendUrl }) => {
           )}
         </AnimatePresence>
 
+        {/* Front Plate (the V shape cover) */}
         <div
-          className="absolute bottom-0 w-full h-[180px] bg-white z-20 border-t border-indigo-50"
+          className="absolute bottom-0 w-full h-[180px] bg-[#f0f2ea] z-20 border-t border-white/50 shadow-[-5px_-5px_20px_rgba(0,0,0,0.02)]"
           style={{
             clipPath: "polygon(0 0, 50% 60%, 100% 0, 100% 100%, 0 100%)",
             borderRadius: "0 0 24px 24px",
           }}
         ></div>
 
+        {/* Top Flap */}
         <motion.div
           animate={{
             rotateX: isLocked || isAnimating || showOldLetter ? 180 : 0,
           }}
-          transition={{ duration: 0.8 }}
-          className="absolute top-[40px] w-full h-[110px] bg-indigo-50 z-30 shadow-md"
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="absolute top-[40px] w-full h-[110px] bg-[#d6d9cd] z-30 shadow-md"
           style={{
             clipPath: "polygon(0 0, 50% 100%, 100% 0)",
             transformOrigin: "top",
             backfaceVisibility: "hidden",
+            borderTop: "1px solid rgba(255,255,255,0.5)",
           }}
         />
       </div>
 
+      {/* Actions */}
       <div className="mt-12 w-full flex justify-center">
         {!isLocked ? (
           !showOldLetter ? (
             <button
               onClick={handleSubmit}
               disabled={!text.trim() || isAnimating}
-              className={`bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-10 py-4 rounded-full font-black hover:shadow-2xl transition-all active:scale-95 ${!text.trim() || isAnimating ? "opacity-50 grayscale cursor-not-allowed" : ""}`}
+              className={`relative overflow-hidden bg-[#2c4832] text-white px-12 py-5 rounded-[25px] font-black text-lg transition-all active:scale-95 shadow-[0_15px_30px_rgba(44,72,50,0.2)] ${
+                !text.trim() || isAnimating
+                  ? "opacity-20 grayscale cursor-not-allowed"
+                  : "hover:bg-[#1a2e20]"
+              }`}
             >
-              {isAnimating ? "ЗБЕРІГАЄМО..." : "ПОКЛАСТИ В КОНВЕРТ"}
+              {isAnimating ? "ЗАПЕЧАТУЄМО..." : "ПОКЛАСТИ В КОНВЕРТ"}
             </button>
           ) : (
-            <p className="text-indigo-400 font-bold italic animate-pulse">
-              Прочитай лист вище 👆
-            </p>
+            <div className="flex items-center gap-2 text-[#2c4832]/40 font-black uppercase text-[10px] tracking-widest animate-bounce">
+              <span>Прочитай лист вище</span>
+              <span className="text-lg"></span>
+            </div>
           )
         ) : (
-          <div className="text-center font-bold text-indigo-500">
-            <p className="text-xl">Лист надійно сховано! ✨</p>
-            <p className="text-sm text-gray-400 mt-1">
+          <div className="text-center animate-in fade-in slide-in-from-bottom-2">
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-white rounded-full mb-4 shadow-sm border border-[#2c4832]/5">
+              <span className="text-xl"></span>
+            </div>
+            <p className="text-[#2c4832] font-black text-xl uppercase tracking-tight">
+              Лист надійно сховано!
+            </p>
+            <p className="text-[#2c4832]/40 text-xs font-bold mt-2 uppercase tracking-widest">
               {isSunday
-                ? "Ти вже написав лист сьогодні."
-                : "Конверт відкриється в неділю."}
+                ? "Ти вже написав лист сьогодні"
+                : "Конверт відкриється в неділю"}
             </p>
           </div>
         )}

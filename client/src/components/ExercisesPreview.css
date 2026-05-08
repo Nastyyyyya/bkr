@@ -13,10 +13,6 @@
   background-color: #dccda4;
 }
 
-.benefits {
-  padding: 0 0 64px;
-}
-
 .bnf-title {
   font-weight: 600;
   font-size: 32px;
@@ -165,7 +161,7 @@
 
 @media screen and (min-width: 1440px) {
   .benefits {
-    padding: 82px 0 164px;
+    padding: 82px 0 50px;
   }
 
   .bnf-cont {
@@ -197,7 +193,6 @@
 @media only screen and (min-width: 1440px) {
   .exercise-container {
     max-width: 1440px;
-    padding: 0 32px;
   }
 }
 

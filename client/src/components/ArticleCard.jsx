@@ -8,27 +8,43 @@ const ArticleCard = ({ article }) => {
     navigate(`/articles/${article._id}`);
   };
 
+  const stripHtml = (htmlString) => {
+    if (!htmlString) return "";
+    const doc = new DOMParser().parseFromString(htmlString, "text/html");
+    return doc.body.textContent || "";
+  };
+
   return (
-    <div>
-      {" "}
-      <div className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col">
-        {/* Збільшена висота картинки */}
-        <img
-          src={assets[article.image]}
-          alt={article.title}
-          className="w-full h-64 object-cover" // раніше було h-48
-        />
+    <div className="group h-full">
+      <div className="bg-[#F3F0E8] rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col h-full border border-gray-100 pt-2">
+        {/* Контейнер картинки з легким зумом при наведенні */}
+        <div className="overflow-hidden bg-[#F3F0E8] flex items-center justify-center h-72">
+          <img
+            src={assets[article.image]}
+            alt={article.title}
+            className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
+          />
+        </div>
 
-        <div className="p-4 flex flex-col gap-4 flex-1">
-          <h3 className="text-lg font-semibold">{article.title}</h3>
-          <p className="text-sm text-gray-600 line-clamp-3">{article.text}</p>
+        {/* Контентна частина */}
+        <div className="p-4 flex flex-col items-center text-center flex-1">
+          <h3 className="text-xl font-bold text-gray-800 mb-3 p-4 min-h-[3.5rem] flex items-center">
+            {article.title}
+          </h3>
 
-          <button
-            onClick={handleReadMore}
-            className="mt-auto px-4 py-2 bg-[#354024] text-white rounded-full hover:brightness-110 w-fit"
-          >
-            Читати далі
-          </button>
+          <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3">
+            {stripHtml(article.text)}
+          </p>
+
+          {/* Кнопка по центру */}
+          <div className="mt-auto pt-2">
+            <button
+              onClick={handleReadMore}
+              className="px-10 py-3 bg-[#354024] text-white font-medium rounded-full hover:bg-[#45542f] active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg"
+            >
+              Читати далі
+            </button>
+          </div>
         </div>
       </div>
     </div>

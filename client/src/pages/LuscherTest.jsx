@@ -42,7 +42,10 @@ const LuscherTest = ({ childId }) => {
           selection2: selection2.map((c) => c.code),
         };
 
-        const { data } = await axios.post(`${backendUrl}/api/luscher/save`, payload);
+        const { data } = await axios.post(
+          `${backendUrl}/api/luscher/save`,
+          payload,
+        );
 
         if (data.success) {
           setResultText(data.interpretation);
@@ -59,15 +62,23 @@ const LuscherTest = ({ childId }) => {
   if (resultText) {
     return (
       <div className="p-8 text-center bg-white rounded-3xl border-4">
-        <h2 className="text-2xl font-bold mb-6 text-indigo-700">Ось результати:</h2>
+        <h2 className="text-2xl font-bold mb-6 text-indigo-700">
+          Ось результати:
+        </h2>
         <div className="space-y-4 text-left mb-8">
           {resultText.map((paragraph, index) => (
-            <div key={index} className="bg-indigo-50 p-5 rounded-2xl border-l-4 border-indigo-400">
+            <div
+              key={index}
+              className="bg-indigo-50 p-5 rounded-2xl border-l-4 border-indigo-400"
+            >
               <p className="text-indigo-900 font-medium">{paragraph}</p>
             </div>
           ))}
         </div>
-        <button onClick={() => window.location.reload()} className="px-12 py-4 bg-indigo-600 text-white rounded-full font-bold">
+        <button
+          onClick={() => window.location.reload()}
+          className="px-12 py-4 bg-indigo-600 text-white rounded-full font-bold"
+        >
           Зіграти ще раз ✨
         </button>
       </div>
@@ -76,7 +87,7 @@ const LuscherTest = ({ childId }) => {
 
   const currentSelection = step === 1 ? selection1 : selection2;
   const availableColors = LUSCHER_COLORS.filter(
-    (c) => !currentSelection.some((sel) => sel.code === c.code)
+    (c) => !currentSelection.some((sel) => sel.code === c.code),
   );
 
   return (
@@ -97,17 +108,26 @@ const LuscherTest = ({ childId }) => {
         <h4 className="font-bold mb-3 text-gray-700">Твій вибір:</h4>
         <div className="flex gap-2 h-12">
           {currentSelection.map((c, i) => (
-            <div key={i} className="w-10 h-10 rounded-lg" style={{ backgroundColor: c.hex }} />
+            <div
+              key={i}
+              className="w-10 h-10 rounded-lg"
+              style={{ backgroundColor: c.hex }}
+            />
           ))}
           {Array.from({ length: 8 - currentSelection.length }).map((_, i) => (
-            <div key={i} className="w-10 h-10 border-2 border-dashed border-gray-200 rounded-lg" />
+            <div
+              key={i}
+              className="w-10 h-10 border-2 border-dashed border-gray-200 rounded-lg"
+            />
           ))}
         </div>
       </div>
 
       <button
         className={`w-full py-4 rounded-2xl font-bold text-lg ${
-          currentSelection.length === 8 ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-400"
+          currentSelection.length === 8
+            ? "bg-indigo-600 text-white"
+            : "bg-gray-200 text-gray-400"
         }`}
         onClick={nextStep}
         disabled={currentSelection.length < 8}

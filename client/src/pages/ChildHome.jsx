@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { assets } from "../assets/assets";
 
 import { AppContext } from "../context/AppContext";
 import MoodModal from "../components/MoodModal";
@@ -11,15 +12,15 @@ import AffectiveGoNoGo from "../components/AffectiveGoNoGo";
 import ChildrenAnxietyMeter from "../components/ChildrenAnxietyMeter";
 import SDQTest from "../components/SDQTest";
 import WilsonTreeTest from "../components/WilsonTreeTest";
-import DemboRubinstein from "../components/DemboRubinstein"; // Імпортуємо новий компонент
+import DemboRubinstein from "../components/DemboRubinstein";
 import FutureLetter from "../components/FutureLetter";
+import ChildNavbar from "../components/ChildNavbar";
 
 import "../index.css";
 
 const ChildHome = () => {
   const { childId } = useParams();
   const navigate = useNavigate();
-
   const { backendUrl, setUserData, setIsLoggedin } = useContext(AppContext);
 
   const [child, setChild] = useState(null);
@@ -28,33 +29,62 @@ const ChildHome = () => {
   const [garden, setGarden] = useState(null);
   const [todayMood, setTodayMood] = useState("happy");
 
+  // ЛОГІКА ПЕРСОНАЖА
+  const [assistantText, setAssistantText] = useState("Привіт! Давай пограємо?");
+
+  const sectionPhrases = {
+    "section-welcome": "Привіт! Радий тебе бачити. З чого почнемо?",
+    "section-mood": "Тут ти можеш переглянути свій настрій",
+    "section-garden": "Подивись, який гарний сад ми виростили разом!",
+    "section-future": "Напиши листа собі у майбутнє",
+    "section-dembo": "Як ти почуваєшся? Познач з допомогою повзунка.",
+    "section-wilson": "Хто ти сьогодні на цьому дереві? Обери свого чоловічка.",
+    "section-luscher": "Кольори можуть розповісти про твій настрій. Спробуй!",
+    "section-twine": "Час для казки! Тут ти обираєш, що буде далі.",
+    "section-anxiety": "Давай послухаємо, як б'ється твоє серденько.",
+    "section-gonogo": "Будь уважним! Це гра на швидкість та точність.",
+    "section-sdq": "Тест для тебе",
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setAssistantText(sectionPhrases[entry.target.id] || assistantText);
+          }
+        });
+      },
+      { threshold: 0.5 },
+    );
+
+    Object.keys(sectionPhrases).forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [loading, assistantText]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const childRes = await axios.get(`${backendUrl}/api/child/${childId}`, {
           withCredentials: true,
         });
-
-        if (childRes.data.success) {
-          setChild(childRes.data.child);
-        }
+        if (childRes.data.success) setChild(childRes.data.child);
 
         const moodRes = await axios.get(
           `${backendUrl}/api/child-mood/today/${childId}`,
           { withCredentials: true },
         );
-
         setTodayMood(moodRes.data.mood || "happy");
-
-        if (!moodRes.data.hasMood) {
-          setShowModal(true);
-        }
+        if (!moodRes.data.hasMood) setShowModal(true);
 
         const gardenRes = await axios.get(
           `${backendUrl}/api/child-garden/${childId}`,
           { withCredentials: true },
         );
-
         setGarden(gardenRes.data);
       } catch (err) {
         console.error("Помилка завантаження даних:", err.message);
@@ -62,115 +92,122 @@ const ChildHome = () => {
         setLoading(false);
       }
     };
-
-    if (childId) {
-      fetchData();
-    }
+    if (childId) fetchData();
   }, [childId, backendUrl]);
 
-  const handleYes = () => {
-    setShowModal(false);
-    navigate(`/child-chatbot/${childId}`);
-  };
-
-  const handleNo = () => setShowModal(false);
-
-  const handleChildLogout = () => {
-    setUserData(false);
-    setIsLoggedin(false);
-    navigate("/");
+  const handleChildLogout = async () => {
+    try {
+      axios.defaults.withCredentials = true;
+      const { data } = await axios.post(`${backendUrl}/api/auth/logout`);
+      if (data.success) {
+        setUserData(false);
+        setIsLoggedin(false);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   if (loading)
     return (
-      <p className="text-center mt-20 text-indigo-500 font-bold">
-        Завантаження...
-      </p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#D4E6B8]">
+        <p className="text-[#2c4832] font-black uppercase tracking-widest">
+          Завантаження...
+        </p>
+      </div>
     );
 
   return (
-    <div className="flex flex-col items-center justify-center relative container pb-20">
-      {showModal && (
-        <MoodModal
-          childId={childId}
-          backendUrl={backendUrl}
-          onYes={handleYes}
-          onNo={handleNo}
-        />
-      )}
+    <div className="min-h-screen bg-[#D4E6B8]">
+      <ChildNavbar childName={child?.name} onLogout={handleChildLogout} />
 
-      <h1 className="text-3xl sm:text-5xl font-bold mb-4 mt-12 text-gray-800">
-        Привіт{child ? `, ${child.name}` : ""}! 🌈
-      </h1>
-
-      <p className="text-lg mb-8 text-gray-500">
-        Твій простір для гри та веселощів 🎮
-      </p>
-
-      {childId && (
-        <div className="w-full flex flex-col items-center gap-12">
-          <MoodCalendar childId={childId} />
-
-          {garden && (
-            <Garden
-              flowers={garden.flowers}
-              treeStage={garden.treeStage}
-              rain={garden.rain}
-              beaver={garden.beaver}
-              clouds={garden.clouds}
-              currentMood={todayMood}
-            />
-          )}
-        </div>
-      )}
-
-      <div className="w-full max-w-5xl mt-16">
-        <FutureLetter childId={childId} backendUrl={backendUrl} />
-      </div>
-
-      {/* НОВИЙ ТЕСТ: Шкала Дембо-Рубінштейн */}
-      <div className="w-full mt-16 px-4">
-         <DemboRubinstein childId={childId} backendUrl={backendUrl} />
-      </div>
-
-      <div className="w-full max-w-5xl mt-16">
-        <WilsonTreeTest 
-          childId={childId} 
-          backendUrl={backendUrl} 
-          onSelect={(num) => console.log("Результат дерева збережено для №:", num)} 
-        />
-      </div>
-
-      <div className="w-full max-w-5xl mt-16 bg-white rounded-3xl border border-indigo-50 overflow-hidden shadow-2xl">
-        <LuscherTest childId={childId} />
-      </div>
-
-      <div className="w-full max-w-5xl h-[650px] mt-16 rounded-3xl overflow-hidden shadow-2xl">
-        <iframe
-          src="/twine/Fairytale.html"
-          title="Інтерактивна казка"
-          className="w-full h-full border-none"
-        />
-      </div>
-
-      <div className="w-full mt-16">
-        <ChildrenAnxietyMeter childId={childId} backendUrl={backendUrl} />
-      </div>
-
-      <div className="w-full max-w-5xl h-[500px] mt-16 rounded-3xl overflow-hidden shadow-2xl">
-        <AffectiveGoNoGo childId={childId} backendUrl={backendUrl} />
-      </div>
-
-      <div className="w-full mt-16">
-        <SDQTest childId={childId} backendUrl={backendUrl} />
-      </div>
-
-      <button
-        onClick={handleChildLogout}
-        className="mt-20 px-12 py-4 bg-gradient-to-r from-red-400 to-red-500 text-white rounded-full font-bold hover:shadow-lg transition-all active:scale-95"
+      {/* ПЕРСОНАЖ-ПОМІЧНИК (КЛІКАБЕЛЬНИЙ) */}
+      <div
+        className="assistant-container group cursor-pointer"
+        onClick={() => navigate(`/child-chatbot/${childId}`)}
       >
-        Вийти
-      </button>
+        <div className="speech-bubble group-hover:scale-105 transition-transform">
+          <p className="p-assist">{assistantText}</p>
+        </div>
+        <img
+          src={assets.header_img}
+          alt="Helper"
+          className="assistant-img transition-all duration-300 group-hover:scale-110 group-active:scale-90"
+        />
+      </div>
+
+      <div className="flex flex-col items-center justify-center relative container pb-20 mx-auto px-4">
+        {showModal && (
+          <MoodModal
+            childId={childId}
+            backendUrl={backendUrl}
+            onYes={() => {
+              setShowModal(false);
+              navigate(`/child-chatbot/${childId}`);
+            }}
+            onNo={() => setShowModal(false)}
+          />
+        )}
+
+        {childId && (
+          <div className="w-full flex flex-col items-center gap-12">
+            <div id="section-mood" className="w-full flex justify-center">
+              <MoodCalendar childId={childId} />
+            </div>
+            <div id="section-garden" className="w-full">
+              {garden && (
+                <Garden
+                  flowers={garden.flowers}
+                  treeStage={garden.treeStage}
+                  rain={garden.rain}
+                  beaver={garden.beaver}
+                  clouds={garden.clouds}
+                  currentMood={todayMood}
+                />
+              )}
+            </div>
+          </div>
+        )}
+
+        <div id="section-dembo" className="w-full mt-16 px-4">
+          <DemboRubinstein childId={childId} backendUrl={backendUrl} />
+        </div>
+
+        <div id="section-wilson" className="w-full max-w-5xl mt-16">
+          <WilsonTreeTest
+            childId={childId}
+            backendUrl={backendUrl}
+            onSelect={(num) => console.log(num)}
+          />
+        </div>
+
+        <div
+          id="section-luscher"
+          className="w-full max-w-5xl mt-16 bg-[#f8f9f5] rounded-[40px] border border-white overflow-hidden shadow-[0_20px_50px_rgba(44,72,50,0.1)]"
+        >
+          <LuscherTest childId={childId} />
+        </div>
+
+        <div id="section-anxiety" className="w-full mt-16">
+          <ChildrenAnxietyMeter childId={childId} backendUrl={backendUrl} />
+        </div>
+
+        <div
+          id="section-gonogo"
+          className="w-full max-w-5xl mt-16 rounded-[40px] overflow-hidden shadow-[0_20px_50px_rgba(44,72,50,0.1)]"
+        >
+          <AffectiveGoNoGo childId={childId} backendUrl={backendUrl} />
+        </div>
+
+        <div id="section-sdq" className="w-full mt-16">
+          <SDQTest childId={childId} backendUrl={backendUrl} />
+        </div>
+
+        <div id="section-future" className="w-full max-w-5xl mt-16">
+          <FutureLetter childId={childId} backendUrl={backendUrl} />
+        </div>
+      </div>
     </div>
   );
 };

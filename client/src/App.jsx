@@ -19,39 +19,47 @@ import ExercisesPage from "./pages/ExercisesPage";
 import ExerciseDetail from "./pages/ExerciseDetail";
 import ChildOverview from "./pages/ChildOverview.jsx";
 import LuscherTest from "./pages/LuscherTest";
+import Fairytales from "./pages/Fairytales.jsx"; // Імпорт казок
 
-import { AppContext } from "./context/AppContext.jsx"; // Додано контекст
+import Footer from "./components/Footer";
+import { AppContext } from "./context/AppContext.jsx";
 
 const App = () => {
   const { userData } = useContext(AppContext);
-  // Використовуємо ID з userData, якщо він завантажений, інакше null
   const currentUserId = userData?._id || null;
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <ToastContainer />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/email-verify" element={<EmailVerify />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/add-child" element={<AddChild />} />
-        <Route path="/my-children" element={<MyChildren />} />
-        <Route path="/child/:id" element={<ChildOverview />} />
-        <Route path="/child-home/:childId" element={<ChildHome />} />
-        <Route path="/child-chatbot/:childId" element={<ChildChatBot />} />
-        <Route path="/articles" element={<Articles />} />
-        <Route path="/articles/:id" element={<ArticlePage />} />
-        <Route path="/test/start" element={<TestStart />} />
-        <Route path="/test/questions" element={<TestQuestions />} />
-        <Route path="/test/result" element={<TestResult />} />
-        <Route path="/exercises" element={<ExercisesPage />} />
-        <Route path="/exercises/:id" element={<ExerciseDetail />} />
-        <Route
-          path="/luscher-test"
-          element={<LuscherTest userId={currentUserId} />}
-        />
-      </Routes>
+
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/email-verify" element={<EmailVerify />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/add-child" element={<AddChild />} />
+          <Route path="/my-children" element={<MyChildren />} />
+          <Route path="/child/:id" element={<ChildOverview />} />
+          <Route path="/child-home/:childId" element={<ChildHome />} />
+          <Route path="/child-chatbot/:childId" element={<ChildChatBot />} />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/articles/:id" element={<ArticlePage />} />
+          <Route path="/test/start" element={<TestStart />} />
+          <Route path="/test/questions" element={<TestQuestions />} />
+          <Route path="/test/result" element={<TestResult />} />
+          <Route path="/exercises" element={<ExercisesPage />} />
+          <Route path="/exercises/:id" element={<ExerciseDetail />} />
+          <Route
+            path="/luscher-test"
+            element={<LuscherTest userId={currentUserId} />}
+          />
+          {/* ТЕПЕР МАРШРУТ ВСЕРЕДИНІ ROUTES */}
+          <Route path="/fairytales/:childId" element={<Fairytales />} />
+        </Routes>
+      </main>
+
+      <Footer />
     </div>
   );
 };

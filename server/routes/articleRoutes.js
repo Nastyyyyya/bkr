@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", getArticles); // тепер правильно
+router.get("/", getArticles);
 router.get("/:id", getArticleById);
 
 export default router;

@@ -2,15 +2,49 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const scales = [
-  { id: "health", label: "Здоров'я", low: "Часто хворію 🤒", high: "Дуже міцний 💪" },
-  { id: "intelligence", label: "Розум", low: "Важко вчитися 🧩", high: "Все знаю 🧠" },
-  { id: "character", label: "Характер", low: "Я шкідливий 😤", high: "Я герой ✨" },
-  { id: "happiness", label: "Щастя", low: "Мені сумно 😢", high: "Я щасливий! 🎉" },
+  {
+    id: "health",
+    label: "Здоров'я",
+    low: "Слабке",
+    high: "Міцне",
+    iconLow: "🤒",
+    iconHigh: "🔋",
+  },
+  {
+    id: "intelligence",
+    label: "Навчання",
+    low: "Важко",
+    high: "Легко",
+    iconLow: "🧩",
+    iconHigh: "💡",
+  },
+  {
+    id: "character",
+    label: "Взаємини",
+    low: "Складно",
+    high: "Дружньо",
+    iconLow: "🗯️",
+    iconHigh: "🤝",
+  },
+  {
+    id: "happiness",
+    label: "Настрій",
+    low: "Сумний",
+    high: "Чудовий",
+    iconLow: "☁️",
+    iconHigh: "☀️",
+  },
 ];
 
 const DemboRubinstein = ({ childId, backendUrl }) => {
-  const [values, setValues] = useState({ health: 50, intelligence: 50, character: 50, happiness: 50 });
+  const [values, setValues] = useState({
+    health: 50,
+    intelligence: 50,
+    character: 50,
+    happiness: 50,
+  });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (id, val) => {
     setValues((prev) => ({ ...prev, [id]: parseInt(val) }));
@@ -18,34 +52,50 @@ const DemboRubinstein = ({ childId, backendUrl }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(`${backendUrl}/api/dembo/dembo-save`, {
-        childId,
-        results: values,
-      }, { withCredentials: true });
+      setLoading(true);
+      const response = await axios.post(
+        `${backendUrl}/api/dembo/dembo-save`,
+        { childId, results: values },
+        { withCredentials: true },
+      );
 
       if (response.data.success) {
         setSubmitted(true);
       }
     } catch (err) {
       console.error("Помилка збереження:", err);
-      alert("Ой! Щось пішло не так. Спробуй ще раз.");
+      alert("Не вдалося зберегти. Спробуй ще раз.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white p-6 sm:p-10 rounded-[40px] shadow-2xl border-4 border-indigo-50 w-full max-w-5xl mx-auto">
-      <h2 className="text-2xl sm:text-3xl font-black text-indigo-600 text-center mb-10 tracking-tight">
-        Оціни свої суперсили! 🚀
+    <div className="bg-[#f8f9f5] p-6 sm:p-10 rounded-[40px] shadow-[0_20px_50px_rgba(44,72,50,0.08)] border border-white w-full max-w-5xl mx-auto mb-10">
+      <h2 className="text-2xl sm:text-3xl font-black text-[#2c4832] text-center mb-3 tracking-tight uppercase">
+        Як ти почуваєшся?
       </h2>
-      
-      <div className="flex flex-wrap justify-around gap-6 mb-12">
+      <p className="text-center mx-auto max-w-md text-[#2c4832]/60 font-medium mb-10 text-sm sm:text-base leading-relaxed">
+        Пересунь повзунки на ту висоту, яка найкраще описує тебе сьогодні
+      </p>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
         {scales.map((scale) => (
-          <div key={scale.id} className="flex flex-col items-center w-20 sm:w-32">
-            <span className="font-bold text-gray-700 mb-4 text-sm sm:text-lg">{scale.label}</span>
-            
-            <div className="relative h-72 w-14 sm:w-16 bg-gradient-to-b from-blue-50 to-indigo-50 rounded-full border-4 border-white shadow-inner flex flex-col items-center justify-between py-6">
-              <span className="text-2xl z-10 select-none">🚀</span>
-              
+          <div key={scale.id} className="flex flex-col items-center">
+            <span className="font-bold text-[#2c4832] mb-5 text-base sm:text-lg uppercase tracking-wider text-center">
+              {scale.label}
+            </span>
+
+            {/* Висота змінена з h-80 на h-64 */}
+            <div className="relative h-64 w-16 bg-white rounded-full border border-[#2c4832]/10 shadow-inner flex flex-col items-center justify-between py-6">
+              <span
+                className="text-3xl z-10 select-none filter drop-shadow-sm"
+                role="img"
+                aria-label={scale.high}
+              >
+                {scale.iconHigh}
+              </span>
+
               <input
                 type="range"
                 min="0"
@@ -53,17 +103,29 @@ const DemboRubinstein = ({ childId, backendUrl }) => {
                 value={values[scale.id]}
                 onChange={(e) => handleChange(scale.id, e.target.value)}
                 className="dembo-slider"
+                aria-label={`Оцінка за шкалою ${scale.label}`}
               />
-              
-              <span className="text-2xl z-10 select-none">🐌</span>
+
+              <div
+                className="absolute bottom-0 w-full bg-[#2c4832]/5 rounded-b-full transition-all duration-300"
+                style={{ height: `${values[scale.id]}%`, opacity: 0.4 }}
+              />
+
+              <span
+                className="text-3xl z-10 select-none filter drop-shadow-sm"
+                role="img"
+                aria-label={scale.low}
+              >
+                {scale.iconLow}
+              </span>
             </div>
 
-            <div className="mt-6 text-center">
-              <div className="inline-block bg-indigo-500 text-white px-3 py-1 rounded-full text-sm sm:text-lg font-black shadow-md mb-2">
+            <div className="mt-6 flex flex-col items-center w-full">
+              <div className="inline-block bg-[#2c4832] text-white px-4 py-1 rounded-2xl text-lg font-black shadow-lg mb-3 min-w-[65px] text-center">
                 {values[scale.id]}%
               </div>
-              <p className="text-[10px] leading-tight text-gray-400 font-bold uppercase tracking-tighter">
-                {scale.high.split(' ')[0]} / {scale.low.split(' ')[0]}
+              <p className="text-[11px] font-black uppercase tracking-widest text-[#2c4832]/60 text-center leading-tight max-w-[110px]">
+                {scale.high} <br /> / <br /> {scale.low}
               </p>
             </div>
           </div>
@@ -73,47 +135,50 @@ const DemboRubinstein = ({ childId, backendUrl }) => {
       {!submitted ? (
         <button
           onClick={handleSubmit}
-          className="w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-black text-xl rounded-3xl shadow-xl transform transition active:scale-95"
+          disabled={loading}
+          className="w-full py-5 bg-[#2c4832] hover:bg-[#1a2e20] text-white font-black text-xl rounded-[30px] shadow-[0_15px_30px_rgba(44,72,50,0.2)] transform transition-all active:scale-[0.98] disabled:opacity-50"
         >
-          ЗБЕРЕГТИ РЕЗУЛЬТАТ ✨
+          {loading ? "ЗБЕРЕЖЕННЯ..." : "ЗБЕРЕГТИ РЕЗУЛЬТАТ"}
         </button>
       ) : (
-        <div className="text-center p-6 bg-green-100 rounded-3xl border-2 border-green-200 text-green-700 font-black text-xl animate-pulse">
-          Чудово! Результати в базі 🏆
+        <div className="text-center p-6 bg-white rounded-[30px] border-2 border-[#2c4832]/20 text-[#2c4832] font-black text-xl animate-in zoom-in">
+          Дякую! Твоя відповідь записана
         </div>
       )}
 
       <style jsx>{`
         .dembo-slider {
           -webkit-appearance: none;
-          width: 220px;
-          height: 10px;
+          /* Ширина має відповідати новій висоті контейнера h-64 (256px - padding) */
+          width: 200px;
+          height: 40px;
           background: transparent;
           transform: rotate(-90deg);
           position: absolute;
           top: 48%;
           left: 50%;
-          margin-left: -110px;
+          margin-left: -100px;
           cursor: pointer;
           z-index: 20;
         }
         .dembo-slider::-webkit-slider-thumb {
           -webkit-appearance: none;
-          height: 35px;
-          width: 35px;
+          height: 40px;
+          width: 40px;
           border-radius: 50%;
-          background: #6366f1;
-          border: 4px solid white;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+          background: white;
+          border: 5px solid #2c4832;
+          box-shadow: 0 4px 12px rgba(44, 72, 50, 0.2);
           cursor: pointer;
         }
         .dembo-slider::-moz-range-thumb {
-          height: 35px;
-          width: 35px;
+          height: 40px;
+          width: 40px;
           border-radius: 50%;
-          background: #6366f1;
-          border: 4px solid white;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+          background: white;
+          border: 5px solid #2c4832;
+          box-shadow: 0 4px 12px rgba(44, 72, 50, 0.2);
+          cursor: pointer;
         }
       `}</style>
     </div>

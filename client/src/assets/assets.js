@@ -19,7 +19,9 @@ import tree3 from "./tree3.png";
 
 import war_children from "./war_children.jpg";
 
-import blob_tree from "./blob_tree.jpg"
+import blob_tree from "./blob_tree.jpg";
+
+import book from "./book.svg";
 
 export const assets = {
   arrow_icon,
@@ -40,4 +42,5 @@ export const assets = {
   tree3,
   war_children,
   blob_tree,
+  book,
 };

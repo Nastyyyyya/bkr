@@ -11,52 +11,52 @@ const WilsonTreeTest = ({ childId, backendUrl, onSelect }) => {
   const handleSelect = async (num) => {
     setSelected(num);
     setIsSaving(true);
-
     try {
       const { data } = await axios.post(`${backendUrl}/api/wilson/save`, {
         childId,
-        selectedId: num
+        selectedId: num,
       });
-
-      if (data.success) {
-        if (onSelect) onSelect(num);
-      }
+      if (data.success && onSelect) onSelect(num);
     } catch (error) {
-      console.error("Помилка збереження результату:", error);
+      console.error("Помилка:", error);
     } finally {
       setIsSaving(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center bg-white p-6 rounded-3xl shadow-xl border border-indigo-100 w-full">
-      <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-        Обери свій номер на дереві 🌳
+    <div className="flex flex-col items-center bg-[#f8f9f5] p-6 sm:p-10 rounded-[40px] shadow-[0_20px_50px_rgba(44,72,50,0.08)] border border-white w-full max-w-4xl mx-auto my-10">
+      <h3 className="text-2xl sm:text-3xl font-black text-[#2c4832] mb-2 text-center uppercase tracking-tight">
+        Де ти на дереві? 🌳
       </h3>
-      
-      <div className="w-full max-w-md mb-8 overflow-hidden rounded-2xl border-2 border-indigo-50 relative">
-        <img 
+      <p className="text-center text-[#2c4832]/60 font-medium mb-8 text-sm sm:text-base px-4">
+        Подивись на малюнок і обери чоловічка, який найбільше схожий на тебе
+        зараз
+      </p>
+
+      <div className="w-full max-w-lg mb-10 overflow-hidden rounded-[30px] border-4 border-white shadow-xl relative bg-white transition-transform hover:scale-[1.01]">
+        <img
           src={assets.blob_tree}
-          alt="Тест Дерево" 
-          className="w-full h-auto"
+          alt="Тест Дерево"
+          className="w-full h-auto p-2"
         />
         {isSaving && (
-          <div className="absolute inset-0 bg-white/50 flex items-center justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center z-10">
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-[#2c4832]/10 border-t-[#2c4832]"></div>
           </div>
         )}
       </div>
 
-      <div className="grid grid-cols-4 sm:grid-cols-7 gap-3 w-full max-w-2xl">
+      <div className="grid grid-cols-4 sm:grid-cols-7 gap-3 w-full max-w-2xl px-2">
         {numbers.map((num) => (
           <button
             key={num}
             disabled={isSaving}
             onClick={() => handleSelect(num)}
-            className={`h-12 w-12 rounded-xl font-bold transition-all ${
+            className={`h-12 w-12 sm:h-14 sm:w-14 rounded-2xl font-black text-lg transition-all duration-300 ${
               selected === num
-                ? "bg-indigo-600 text-white scale-110 shadow-lg"
-                : "bg-indigo-50 text-indigo-600 hover:bg-indigo-100"
+                ? "bg-[#2c4832] text-white scale-110 shadow-lg"
+                : "bg-white text-[#2c4832] border border-[#2c4832]/10 hover:border-[#2c4832] hover:bg-[#2c4832]/5"
             } disabled:opacity-50`}
           >
             {num}
@@ -65,8 +65,8 @@ const WilsonTreeTest = ({ childId, backendUrl, onSelect }) => {
       </div>
 
       {selected && !isSaving && (
-        <div className="mt-6 py-2 px-6 bg-green-100 text-green-700 rounded-full font-medium animate-bounce">
-          Результат збережено! Ти вибрав номер {selected}
+        <div className="mt-8 py-3 px-8 bg-white border-2 border-[#2c4832]/10 text-[#2c4832] rounded-full font-black uppercase tracking-widest text-xs animate-bounce">
+          Твій вибір: номер {selected}
         </div>
       )}
     </div>

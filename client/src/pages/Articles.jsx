@@ -12,16 +12,13 @@ const Articles = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const loadArticles = async () => {
-    if (!hasMore) return;
-
+    if (loading || !hasMore) return;
     try {
       setLoading(true);
-
       const { data } = await axios.get(
         `${backendUrl}/api/articles?page=${page}`,
         { withCredentials: true },
       );
-
       if (data.success) {
         setArticles((prev) => [...prev, ...data.articles]);
         setHasMore(data.hasMore);
@@ -39,30 +36,31 @@ const Articles = () => {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
+      {/* Навбар йде першим блоком */}
       <Navbar />
-      <div className="container mx-auto pt-32 px-4">
-        <h1 className="text-3xl font-semibold mb-8">Статті</h1>
 
-        {/* Грід для статей, максимум 2 в ряд */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Контент йде другим блоком. Прибираємо pt-32, ставимо звичайний py-10 (зверху і знизу) */}
+      <main className="container mx-auto py-10 px-4 mt-32">
+        {/* Грід для статей */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-28">
           {articles.map((article) => (
             <ArticleCard key={article._id} article={article} />
           ))}
         </div>
 
         {hasMore && (
-          <div className="flex justify-center mt-10">
+          <div className="flex justify-center mt-12">
             <button
               onClick={loadArticles}
               disabled={loading}
-              className="px-6 py-2 bg-[#354024] text-white rounded-full hover:brightness-110"
+              className="px-8 py-2 bg-[#354024] text-white rounded-full hover:bg-[#4a5a32] transition-colors disabled:opacity-50"
             >
               {loading ? "Завантаження..." : "Завантажити більше"}
             </button>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 };
