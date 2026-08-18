@@ -1,9 +1,6 @@
 # import numpy as np
 # from sklearn.ensemble import RandomForestRegressor
 
-# # -------------------------
-# # TRAIN MODEL
-# # -------------------------
 # X_train = np.array([
 #     [0.9, 0.1, 350, 0.02],
 #     [0.6, 0.3, 500, 0.10],
@@ -17,9 +14,7 @@
 # model.fit(X_train, y_train)
 
 
-# # -------------------------
-# # PREDICT
-# # -------------------------
+
 # def predict(features):
 #     score = model.predict([features])[0]
 
@@ -33,9 +28,7 @@
 #     return {"score": float(score), "level": level}
 
 
-# # -------------------------
-# # REPORT
-# # -------------------------
+
 # def generate_report(features):
 #     pred = predict(features)
 

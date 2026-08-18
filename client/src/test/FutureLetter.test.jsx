@@ -53,7 +53,7 @@ describe("FutureLetter", () => {
     axios.get.mockResolvedValue({
       data: {
         success: true,
-        letter: null, // щоб не було старого листа
+        letter: null,
       },
     });
 
@@ -63,18 +63,10 @@ describe("FutureLetter", () => {
 
     renderComponent();
 
-    // 👉 чекаємо поки useEffect відпрацює
     await waitFor(() => {
       expect(axios.get).toHaveBeenCalled();
     });
 
-    // ❗ УВАГА: textarea з'являється тільки коли:
-    // isLocked = false && showOldLetter = false
-    //
-    // Тому ми НЕ можемо просто "шукати кнопку"
-    // треба перевірити submit через UI state
-
-    // якщо у тебе зараз locked UI → тестимо інше:
     expect(screen.getByText(/лист надійно сховано/i)).toBeInTheDocument();
   });
 
@@ -91,12 +83,10 @@ describe("FutureLetter", () => {
 
     renderComponent();
 
-    // чекаємо завантаження
     await waitFor(() => {
       expect(axios.get).toHaveBeenCalled();
     });
 
-    // старий лист має з’явитися (якщо isSunday=true у твоєму середовищі)
     const maybeOld = screen.queryByText(/привіт із минулого/i);
 
     if (maybeOld) {
@@ -105,7 +95,6 @@ describe("FutureLetter", () => {
       const btn = screen.getByText(/прочитав/i);
       fireEvent.click(btn);
 
-      // після кліку старий лист зникає
       await waitFor(() => {
         expect(
           screen.queryByText(/привіт із минулого/i),
@@ -129,11 +118,9 @@ describe("FutureLetter", () => {
       expect(axios.get).toHaveBeenCalled();
     });
 
-    // textarea може не з’явитись у locked state → тому перевіряємо через DOM fallback
     const textarea = screen.queryByPlaceholderText(/напиши щось важливе/i);
 
     if (!textarea) {
-      // якщо locked — просто тестуємо що кнопка submit НЕ активна
       expect(screen.getByText(/лист надійно сховано/i)).toBeInTheDocument();
 
       return;
@@ -153,7 +140,7 @@ describe("FutureLetter", () => {
   });
 
   it("shows old letter on Sunday if not written today", async () => {
-    vi.setSystemTime(new Date("2026-05-03")); // неділя
+    vi.setSystemTime(new Date("2026-05-03"));
 
     axios.get.mockResolvedValue({
       data: {
@@ -190,7 +177,7 @@ describe("FutureLetter", () => {
     ).toBeInTheDocument();
   });
   it("unlocks and allows writing on Sunday if no letter", async () => {
-    vi.setSystemTime(new Date("2026-05-03")); // неділя
+    vi.setSystemTime(new Date("2026-05-03"));
 
     axios.get.mockResolvedValue({
       data: {

@@ -9,7 +9,6 @@ export default defineConfig({
     baseURL: "http://localhost:5173",
     headless: true,
 
-    // 🔥 стабільність
     actionTimeout: 15000,
     navigationTimeout: 30000,
   },

@@ -11,11 +11,11 @@ const articleSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: String, // URL картинки
+      type: String,
       required: true,
     },
     tags: {
-      type: [String], // наприклад ["Ліберальний стиль", "Авторитетний стиль"]
+      type: [String],
       default: [],
     },
   },

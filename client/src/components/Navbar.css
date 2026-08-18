@@ -1,16 +1,14 @@
-/* Основний контейнер */
 .navbar {
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
-  background-color: #f3f0e8; /* або твій фон */
+  background-color: #f3f0e8;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   background-color: #b7c1a8;
 }
 
-/* Центрування контенту */
 .container {
   min-width: 320px;
   max-width: 375px;
@@ -32,7 +30,6 @@
   }
 }
 
-/* Контейнер навігації */
 .container-nav {
   max-width: 1440px;
   margin: 0 auto;
@@ -42,20 +39,17 @@
   align-items: center;
 }
 
-/* Логотип */
 .logo {
   width: 160px;
   cursor: pointer;
 }
 
-/* Права частина навігації */
 .nav-right {
   display: flex;
   align-items: center;
   gap: 24px;
 }
 
-/* Посилання навігації */
 .nav-links {
   display: none;
   gap: 24px;
@@ -79,7 +73,6 @@
   }
 }
 
-/* Аватар */
 .user-menu {
   position: relative;
 }
@@ -97,7 +90,6 @@
   cursor: pointer;
 }
 
-/* Dropdown для великих екранів */
 .dropdown {
   position: absolute;
   right: 0;
@@ -130,7 +122,6 @@
   background-color: #e2e2e2;
 }
 
-/* Кнопка Вхід */
 .login-btn {
   display: flex;
   align-items: center;
@@ -153,8 +144,6 @@
   filter: invert(1);
 }
 
-/* Мобільне меню на весь екран (тільки для маленьких контейнерів) */
-
 .mobile-menu ul {
   list-style: none;
   padding: 0;
@@ -176,7 +165,6 @@
   background-color: #f2f2f2;
 }
 
-/* Стрілка назад у мобільному меню */
 .back-arrow {
   align-self: flex-start;
   font-size: 20px;
@@ -190,7 +178,6 @@
   background-color: #f2f2f2;
 }
 
-/* Мобільне меню на весь екран тільки для мобільного діапазону */
 .mobile-menu {
   position: fixed;
   top: 0;
@@ -206,7 +193,6 @@
   overflow-y: auto;
 }
 
-/* Стрілка назад */
 .back-arrow {
   align-self: flex-start;
   font-size: 20px;

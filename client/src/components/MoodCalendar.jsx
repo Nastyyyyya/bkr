@@ -79,7 +79,6 @@ const MoodCalendar = ({ childId }) => {
   return (
     <div className="w-full max-h-[85vh] flex flex-col items-center p-2 md:p-4">
       <div className="w-full max-w-[1250px] bg-[#F3F0Ee] backdrop-blur-md rounded-[40px] shadow-2xl border border-white flex flex-col overflow-hidden">
-        {/* Header */}
         <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100">
           <button
             onClick={() => changeMonth(-1)}
@@ -118,7 +117,6 @@ const MoodCalendar = ({ childId }) => {
           </button>
         </div>
 
-        {/* Grid */}
         <div className="p-4 md:p-6 flex-1">
           <div className="grid grid-cols-7 gap-1 md:gap-3 h-full">
             {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"].map((day) => (

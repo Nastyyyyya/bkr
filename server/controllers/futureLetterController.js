@@ -10,7 +10,6 @@ export const saveLetter = async (req, res) => {
         .json({ success: false, message: "Лист порожній!" });
     }
 
-    // ВИДАЛЯЄМО ВСІ ПЕРЕВІРКИ ДАТ. Просто створюємо новий запис.
     const newLetter = new FutureLetter({
       childId,
       content,

@@ -30,9 +30,7 @@ const MoodModal = ({ childId, backendUrl, onYes, onNo }) => {
 
   return (
     <div className="fixed inset-0 bg-[#354024]/60 backdrop-blur-md flex items-center justify-center z-50 p-6">
-      {/* Збільшили max-w-md для простору */}
       <div className="bg-[#F3F0E8] rounded-[45px] p-10 md:p-14 max-w-xl w-full text-center shadow-[0_20px_50px_rgba(0,0,0,0.2)] border-b-8 border-[#354024]/10">
-        {/* Велика аватарка з рамкою */}
         <div className="relative mb-10">
           <div className="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto bg-white p-2 shadow-inner ring-8 ring-[#354024]/5">
             <img
@@ -48,7 +46,6 @@ const MoodModal = ({ childId, backendUrl, onYes, onNo }) => {
           )}
         </div>
 
-        {/* КРОК 1 */}
         {step === 1 && (
           <div className="animate-in fade-in zoom-in duration-500">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#354024] mb-4">
@@ -58,7 +55,6 @@ const MoodModal = ({ childId, backendUrl, onYes, onNo }) => {
               Обери настрій, який у тебе зараз:
             </p>
 
-            {/* Великі кнопки емодзі з великими відступами */}
             <div className="flex justify-around items-center gap-4 mb-6">
               {moods.map((mood) => (
                 <button
@@ -81,7 +77,6 @@ const MoodModal = ({ childId, backendUrl, onYes, onNo }) => {
           </div>
         )}
 
-        {/* КРОК 2 */}
         {step === 2 && selectedMood && (
           <div className="animate-in fade-in slide-in-from-bottom-8 duration-500">
             <h2 className="text-2xl font-serif font-bold text-[#354024] mb-6 px-4 leading-snug">

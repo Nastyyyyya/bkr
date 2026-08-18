@@ -8,7 +8,6 @@ import { assets } from "../assets/assets";
 import "./ChildNavbar.css";
 
 const ChildNavbar = () => {
-  // ВИДАЛИЛИ childName звідси
   const navigate = useNavigate();
   const { childId } = useParams();
   const { backendUrl, setUserData, setIsLoggedin } = useContext(AppContext);
@@ -63,11 +62,10 @@ const ChildNavbar = () => {
           />
         </div>
 
-        {/* Навігація та іконки справа */}
         <div className="nav-right fairytale">
           <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
             <button
-              onClick={() => navigate(`/fairytales/${childId}`)} // Змінено тут
+              onClick={() => navigate(`/fairytales/${childId}`)}
               title="Казки"
             >
               <img
@@ -81,24 +79,20 @@ const ChildNavbar = () => {
               className="game"
               onClick={() => navigate(`/child-chatbot/${childId}`)}
               title="Чат-бот"
-            >
-              🤖
-            </button>
+            ></button>
 
             <button
               className="game"
               onClick={() => navigate(`/exercises`)}
               title="Ігри"
-            >
-              🎮
-            </button>
+            ></button>
 
             <button
               onClick={handleLogout}
               className="login-btn"
               style={{ backgroundColor: "#ef4444", padding: "10px 24px" }}
             >
-              Вийти 🚪
+              Вийти
             </button>
           </div>
         </div>

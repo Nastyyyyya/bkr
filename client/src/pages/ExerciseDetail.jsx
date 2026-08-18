@@ -28,7 +28,6 @@ const ExerciseDetail = () => {
   return (
     <div className="min-h-screen bg-[#f3f0e8] py-12 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
-        {/* Кнопка Повернення */}
         <Link
           to="/exercises"
           className="group inline-flex items-center text-[#354024]/60 hover:text-[#354024] transition-colors mb-12 uppercase tracking-widest text-[10px] font-bold"
@@ -49,7 +48,6 @@ const ExerciseDetail = () => {
           Назад до каталогу
         </Link>
 
-        {/* Шапка статті */}
         <header className="mb-10 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             {exercise.tags?.map((tag) => (
@@ -67,7 +65,6 @@ const ExerciseDetail = () => {
           <div className="w-12 h-[2px] bg-[#354024] mx-auto opacity-30"></div>
         </header>
 
-        {/* Основне зображення */}
         {exercise.image && (
           <div className="relative mb-12">
             <div className="absolute inset-0 bg-[#354024]/5 translate-x-3 translate-y-3 rounded-3xl -z-10"></div>
@@ -79,16 +76,13 @@ const ExerciseDetail = () => {
           </div>
         )}
 
-        {/* Текстовий блок */}
         <article className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-xl shadow-[#354024]/5 border border-[#354024]/5">
           <div className="prose prose-stone max-w-none">
-            {/* Використання whitespace-pre-line для збереження абзаців */}
             <p className="text-[#354024]/80 text-lg leading-[1.8] font-light whitespace-pre-line text-center">
               {exercise.fullText}
             </p>
           </div>
 
-          {/* Футер статті */}
           <div className="mt-12 pt-8 border-t border-[#354024]/10 flex flex-col items-center">
             <p className="text-[#354024]/50 italic text-sm mb-6 text-center">
               Сподіваємося, ця вправа допоможе вам знайти внутрішній спокій

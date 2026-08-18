@@ -1,6 +1,5 @@
 import Exercise from "../models/Exercise.js";
 
-// Отримати всі вправи
 export const getExercises = async (req, res) => {
   try {
     const exercises = await Exercise.find();
@@ -10,7 +9,6 @@ export const getExercises = async (req, res) => {
   }
 };
 
-// Отримати вправу за id
 export const getExerciseById = async (req, res) => {
   try {
     const exercise = await Exercise.findById(req.params.id);
@@ -22,7 +20,6 @@ export const getExerciseById = async (req, res) => {
   }
 };
 
-// Створити нову вправу
 export const createExercise = async (req, res) => {
   try {
     const { title, shortDescription, fullText, image, tags } = req.body;

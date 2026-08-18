@@ -37,7 +37,6 @@ const MyChildren = () => {
       <Navbar />
       <div className="min-h-screen bg-[#b7c1a8] py-16 px-6 mt-10">
         <div className="max-w-5xl mx-auto">
-          {/* Заголовок */}
           <header className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#354024] mb-4">
               Мої діти
@@ -65,7 +64,6 @@ const MyChildren = () => {
                   onClick={() => handleSelectChild(child._id)}
                   className="group relative bg-[#f3f0e8] rounded-[2rem] p-8 cursor-pointer transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#354024]/20 border border-transparent hover:border-[#354024]/10"
                 >
-                  {/* Декоративний елемент у кутку */}
                   <div className="absolute top-6 right-6 w-10 h-10 bg-[#b7c1a8]/20 rounded-full flex items-center justify-center group-hover:bg-[#354024] group-hover:text-[#f3f0e8] transition-colors duration-500">
                     <svg
                       className="w-5 h-5"
@@ -82,7 +80,6 @@ const MyChildren = () => {
                     </svg>
                   </div>
 
-                  {/* Аватар-заглушка (можна замінити на іконку) */}
                   <div className="w-16 h-16 bg-[#b7c1a8] rounded-2xl mb-6 flex items-center justify-center text-[#354024] text-2xl font-serif font-bold">
                     {child.name.charAt(0)}
                   </div>
@@ -96,8 +93,6 @@ const MyChildren = () => {
                       Профіль дитини
                     </span>
                   </div>
-
-                  {/* Ефект підсвічування знизу */}
                   <div className="mt-8 pt-6 border-t border-[#354024]/5">
                     <span className="text-[#354024] text-sm font-semibold group-hover:underline underline-offset-4">
                       Переглянути успіхи →

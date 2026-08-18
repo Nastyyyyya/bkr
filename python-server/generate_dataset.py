@@ -14,12 +14,8 @@ for _ in range(1000):
     mood = np.random.uniform(1, 5)
     dembo = np.random.uniform(20, 100)
 
-    # 🔥 NEW FEATURE
-    anxiety = np.random.uniform(1, 10)
 
-    # =========================
-    # 🔥 RULES FOR LABEL (y)
-    # =========================
+    anxiety = np.random.uniform(1, 10)
 
     risk = 0
 
@@ -36,19 +32,17 @@ for _ in range(1000):
     if misses > 8:
         risk += 1
 
-    # 🔥 ANXIETY RULE (IMPORTANT)
     if anxiety > 7:
         risk += 1
     if anxiety > 9:
-        risk += 2  # extreme anxiety = strong risk signal
+        risk += 2  
 
-    # normalize to 0-2
     if risk <= 1:
-        label = 0   # low risk
+        label = 0  
     elif risk <= 3:
-        label = 1   # medium risk
+        label = 1  
     else:
-        label = 2   # high risk
+        label = 2  
 
     data.append([
         hitRate,
@@ -74,5 +68,5 @@ df = pd.DataFrame(data, columns=[
 
 df.to_csv("dataset.csv", index=False)
 
-print("✅ Dataset created: 1000 samples with ANXIETY")
+print("Dataset created: 1000 samples with ANXIETY")
 print(df.head())

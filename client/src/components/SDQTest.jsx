@@ -80,7 +80,6 @@ const SDQTest = ({ childId, backendUrl }) => {
     <div className="w-full max-w-4xl mx-auto bg-[#f8f9f5] p-8 sm:p-12 rounded-[40px] shadow-[0_20px_50px_rgba(44,72,50,0.08)] border border-white mt-10 select-none">
       {!isFinished ? (
         <div className="flex flex-col items-center">
-          {/* Progress Bar */}
           <div className="w-full flex items-center gap-4 mb-12">
             <div className="flex-1 bg-white h-4 rounded-full overflow-hidden border border-[#2c4832]/5 shadow-inner">
               <div
@@ -93,14 +92,12 @@ const SDQTest = ({ childId, backendUrl }) => {
             </span>
           </div>
 
-          {/* Question Box */}
           <div className="min-h-[160px] flex items-center justify-center w-full px-4 mb-12 bg-white rounded-[30px] border border-[#2c4832]/5 shadow-sm">
             <h3 className="text-xl sm:text-2xl font-black text-[#2c4832] text-center leading-snug">
               {testData.questions[currentIndex].text}
             </h3>
           </div>
 
-          {/* Answer Buttons */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl">
             {["Невірно", "Частково", "Вірно"].map((label, idx) => (
               <button
@@ -117,7 +114,6 @@ const SDQTest = ({ childId, backendUrl }) => {
             ))}
           </div>
 
-          {/* Navigation Button */}
           <button
             onClick={handleNext}
             disabled={answers[currentIndex] === undefined}
@@ -133,7 +129,6 @@ const SDQTest = ({ childId, backendUrl }) => {
           </p>
         </div>
       ) : (
-        /* Success Screen */
         <div className="text-center py-12 flex flex-col items-center animate-in fade-in zoom-in duration-700">
           <h2 className="text-4xl font-black text-[#2c4832] mb-6 uppercase tracking-tight">
             Ти молодець!

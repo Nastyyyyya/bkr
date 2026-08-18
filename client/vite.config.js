@@ -13,7 +13,6 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "html"],
 
-      // 🔥 головне — прибирає фото/картинки/стилі з coverage
       exclude: [
         "src/assets/**",
         "**/*.png",

@@ -3,10 +3,8 @@ import { describe, it, expect, vi } from "vitest";
 import axios from "axios";
 import WilsonTreeTest from "../components/WilsonTreeTest";
 
-// mock axios
 vi.mock("axios");
 
-// mock картинки (щоб не падало)
 vi.mock("../assets/assets", () => ({
   assets: {
     blob_tree: "test-image.png",

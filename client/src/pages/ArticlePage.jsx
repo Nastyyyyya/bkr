@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./ArticlePage.css"; // Підключаємо стилі
+import "./ArticlePage.css";
 import { assets } from "../assets/assets";
 import Navbar from "../components/Navbar";
 

@@ -12,7 +12,6 @@ const ExercisesPage = () => {
     fetch("http://localhost:4000/api/exercises")
       .then((res) => res.json())
       .then((data) => {
-        // Перевірка чи дані є масивом, щоб уникнути помилок .filter
         if (Array.isArray(data)) {
           const parentsExercises = data.filter((ex) => ex.role === "parents");
           setExercises(parentsExercises);
@@ -25,14 +24,11 @@ const ExercisesPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f3f0e8]">
-      {/* Навбар зверху */}
       <Navbar />
 
-      {/* Основний контент */}
       <main className="flex-grow mt-20">
         <div className="py-12 px-4 sm:px-6">
           <div className="max-w-5xl mx-auto">
-            {/* Header Section */}
             <header className="text-center mb-16">
               <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#354024] mt-3 mb-6">
                 Практики для батьків
@@ -40,7 +36,6 @@ const ExercisesPage = () => {
               <div className="w-20 h-1 bg-[#354024] mx-auto opacity-20"></div>
             </header>
 
-            {/* Categories List */}
             <div className="space-y-6">
               {categories.map((cat) => (
                 <div key={cat} className="group">
@@ -73,7 +68,6 @@ const ExercisesPage = () => {
                     </div>
                   </button>
 
-                  {/* Grid of Exercises */}
                   <div
                     className={`grid transition-all duration-500 ease-in-out overflow-hidden ${openCategory === cat ? "max-h-[5000px] opacity-100 mt-8" : "max-h-0 opacity-0"}`}
                   >
@@ -95,7 +89,6 @@ const ExercisesPage = () => {
   );
 };
 
-// Окремий компонент для "красивої вправи"
 const ExerciseCard = ({ exercise }) => {
   const navigate = useNavigate();
 
@@ -106,7 +99,6 @@ const ExerciseCard = ({ exercise }) => {
   return (
     <div className="group h-full">
       <div className="bg-[#B7C1A8] rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full border border-gray-100 pt-2">
-        {/* Контейнер картинки як у статтях */}
         <div className="overflow-hidden flex items-center justify-center h-64 relative">
           {exercise.image ? (
             <img
@@ -123,7 +115,6 @@ const ExerciseCard = ({ exercise }) => {
           )}
         </div>
 
-        {/* Контентна частина центрована як у статтях */}
         <div className="p-6 flex flex-col items-center text-center flex-1">
           <h3 className="text-xl font-bold text-gray-800 mb-3 min-h-[3.5rem] flex items-center justify-center leading-tight">
             {exercise.title}
@@ -133,7 +124,6 @@ const ExerciseCard = ({ exercise }) => {
             {exercise.shortDescription}
           </p>
 
-          {/* Кнопка по центру */}
           <div className="mt-auto pt-2 w-full">
             <button
               onClick={handleReadMore}

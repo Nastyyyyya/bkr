@@ -11,7 +11,6 @@ const MainArticle = () => {
   const swiperRef = useRef(null);
   const navigate = useNavigate();
 
-  // 🔹 Всі статті тепер беруться з бази через articleId
   const projects = [
     {
       id: 1,
@@ -25,7 +24,7 @@ const MainArticle = () => {
       id: 2,
       title: "Корисні статті",
       description: "Ознаки, що вказують на потребу психологічної допомоги",
-      articleId: "NEW_ARTICLE_ID_FROM_MONGO", // тут вставляємо id твоєї другої статті
+      articleId: "NEW_ARTICLE_ID_FROM_MONGO",
       image: assets.truvoga_article,
     },
     {
@@ -73,7 +72,6 @@ const MainArticle = () => {
 
                   <p className="item-inf-p">{project.description}</p>
 
-                  {/* 🔹 Всі статті тепер переходять всередині сайту */}
                   <button
                     className="item-inf-a"
                     onClick={() => navigate(`/articles/${project.articleId}`)}

@@ -1,8 +1,8 @@
-import MoodModel from "../models/ChildMood.js"; // перевірте назви файлів!
+import MoodModel from "../models/ChildMood.js";
 import DemboModel from "../models/DemboResult.js";
 import anxietyModel from "../models/anxietyModel.js";
 import { SDQResultModel } from "../models/SDQTest.js";
-import goNoGoModel from "../models/goNoGoModel.js"; // змініть на вашу назву моделі
+import goNoGoModel from "../models/goNoGoModel.js";
 
 export const getMonthlyDeepData = async (req, res) => {
   try {
@@ -15,7 +15,6 @@ export const getMonthlyDeepData = async (req, res) => {
       DemboModel.find({ childId, date: { $gte: monthAgo } }),
       anxietyModel.find({ childId, date: { $gte: monthAgo } }),
       SDQResultModel.find({ childId, date: { $gte: monthAgo } }),
-      // Якщо модель GoNoGo інша — підставте правильну назву
       goNoGoModel.find({ childId, date: { $gte: monthAgo } }),
     ]);
 

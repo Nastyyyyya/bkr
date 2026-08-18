@@ -16,7 +16,6 @@ export const getSDQTest = async (req, res) => {
 export const saveSDQResult = async (req, res) => {
   const { childId, scores } = req.body;
   try {
-    // Офіційні межі для самооцінки (Self-report)
     let status = "Норма (близько до середнього)";
     if (scores.total >= 20)
       status = "Високий рівень труднощів (рекомендовано консультацію)";
@@ -37,7 +36,6 @@ export const saveSDQResult = async (req, res) => {
   }
 };
 
-// Додай цей експорт у controllers/SDQController.js
 export const getSDQHistory = async (req, res) => {
   try {
     const { childId } = req.params;

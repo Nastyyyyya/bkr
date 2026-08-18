@@ -13,7 +13,6 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileRange, setIsMobileRange] = useState(window.innerWidth <= 768);
 
-  // Слухач на зміну розміру
   useEffect(() => {
     const handleResize = () => setIsMobileRange(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
@@ -58,7 +57,6 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="container container-nav">
-        {/* Логотип */}
         <img
           src={assets.logo}
           alt="Logo"
@@ -66,9 +64,7 @@ const Navbar = () => {
           onClick={() => navigate("/")}
         />
 
-        {/* Навігація та кнопки */}
         <div className="nav-right">
-          {/* Навігаційні посилання тільки для великих екранів */}
           {!isMobileRange && (
             <div className="nav-links">
               <span onClick={() => navigate("/")}>Головна</span>
@@ -83,7 +79,6 @@ const Navbar = () => {
                 {userData.name[0].toUpperCase()}
               </div>
 
-              {/* Dropdown для великих екранів */}
               {!isMobileRange && (
                 <div className="dropdown">
                   <ul>
@@ -110,14 +105,12 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Мобільне меню на весь екран для екранів <= 768px */}
       {isMobileRange && mobileMenuOpen && (
         <div className="mobile-menu">
           <div className="back-arrow" onClick={toggleMobileMenu}>
             ←
           </div>
           <ul>
-            {/* Основні пункти */}
             <li
               onClick={() => {
                 navigate("/articles");
@@ -143,7 +136,6 @@ const Navbar = () => {
               Самодопомога
             </li>
 
-            {/* Приховані пункти */}
             {!userData.isAccountVerified && (
               <li
                 onClick={() => {

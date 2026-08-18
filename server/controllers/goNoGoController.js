@@ -1,6 +1,5 @@
 import goNoGoModel from "../models/goNoGoModel.js";
 
-// Збереження результату
 export const saveGoNoGoResult = async (req, res) => {
   try {
     const { childId } = req.params;
@@ -19,7 +18,6 @@ export const saveGoNoGoResult = async (req, res) => {
   }
 };
 
-// Отримання історії для звіту
 export const getGoNoGoHistory = async (req, res) => {
   try {
     const { childId } = req.params;

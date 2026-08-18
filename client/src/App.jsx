@@ -19,7 +19,7 @@ import ExercisesPage from "./pages/ExercisesPage";
 import ExerciseDetail from "./pages/ExerciseDetail";
 import ChildOverview from "./pages/ChildOverview.jsx";
 import LuscherTest from "./pages/LuscherTest";
-import Fairytales from "./pages/Fairytales.jsx"; // Імпорт казок
+import Fairytales from "./pages/Fairytales.jsx";
 
 import Footer from "./components/Footer";
 import { AppContext } from "./context/AppContext.jsx";
@@ -54,7 +54,6 @@ const App = () => {
             path="/luscher-test"
             element={<LuscherTest userId={currentUserId} />}
           />
-          {/* ТЕПЕР МАРШРУТ ВСЕРЕДИНІ ROUTES */}
           <Route path="/fairytales/:childId" element={<Fairytales />} />
         </Routes>
       </main>

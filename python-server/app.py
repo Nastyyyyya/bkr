@@ -8,7 +8,7 @@ from bson import ObjectId
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from chat import generate_gemini_response as get_response
-from db import db  # Переконайтеся, що файл db.py поруч
+from db import db  
 from google import genai
 from google.genai.errors import APIError
 
@@ -44,7 +44,7 @@ def generate_gemini_response(user_input: str, history: list = None) -> str:
 
     try:
         response = gemini_client.models.generate_content(
-            model="gemini-2.5-flash-lite", # або gemini-1.5-flash
+            model="gemini-2.5-flash-lite", 
             contents=contents,
             config={"system_instruction": system_instruction, "temperature": 0.7}
         )
@@ -53,37 +53,31 @@ def generate_gemini_response(user_input: str, history: list = None) -> str:
         print(f"[Gemini Error]: {e}")
         return "Не вдалося згенерувати розширений аналіз."
 
-# 1. ЗАВАНТАЖЕННЯ МОДЕЛІ
 try:
     model = joblib.load("rf_model.pkl")
     print("MODEL LOADED SUCCESSFULLY")
 except:
     print("ERROR: rf_model.pkl not found!")
 
-# 2. ДОПОМІЖНІ ФУНКЦІЇ (ЛОГІКА ML)
 def safe_id(child_id):
     try: return ObjectId(child_id)
     except: return child_id
 
 def get_data(child_id):
     c_id = safe_id(child_id)
-    # Шукаємо дані без жорсткого фільтра по даті, щоб точно знайти реальні записи
-    
-    # 1. Go/NoGo
+
+
     gonogo = list(db.gonogos.find({"childId": c_id}))
     
-    # 2. Настрій (перетворюємо текст у числа та рахуємо середнє)
     mood_map = {"sad": 1, "angry": 2, "neutral": 3, "good": 4, "happy": 5}
     mood_records = list(db.childmoods.find({"childId": c_id}))
     mood_val = np.mean([mood_map.get(m.get("mood"), 3) for m in mood_records]) if mood_records else 3.0
     
-    # 3. Дембо-Рубінштейн (середнє по результатах)
     dembo_records = list(db.demboresults.find({"childId": c_id}))
     if dembo_records:
         all_scores = []
         for rec in dembo_records:
             r = rec.get("results", {})
-            # Середнє арифметичне 4-х шкал одного тесту
             score = (r.get("health", 50) + r.get("intelligence", 50) + 
                      r.get("character", 50) + r.get("happiness", 50)) / 4
             all_scores.append(score)
@@ -91,7 +85,6 @@ def get_data(child_id):
     else:
         dembo_val = 50.0
 
-    # 4. Тривожність (середній level)
     anxiety_records = list(db.anxieties.find({"childId": c_id}))
     anxiety_val = np.mean([a.get("level", 5) for a in anxiety_records]) if anxiety_records else 5.0
 
@@ -106,7 +99,6 @@ def build_features(data):
     if not data["gonogo"]: return None
     df = pd.DataFrame(data["gonogo"])
     
-    # ТУТ ТІЛЬКИ 7 ОЗНАК, ЯКІ ОЧІКУЄ МОДЕЛЬ (БЕЗ ЗАГЛУШОК)
     return np.array([[
         df["hitRate"].mean(),
         df["misses"].mean(),
@@ -140,7 +132,6 @@ def get_tree_base64():
     plt.close(fig)
     return img_str
 
-# 3. ЕНДПОІНТИ FLASK
 @app.post("/analyze-dynamics")
 def deep_analysis():
     data_json = request.get_json()
@@ -153,7 +144,6 @@ def deep_analysis():
         return jsonify({"success": False, "error": "No data found"})
     
     prediction, proba = predict_logic(features)
-    # Розрахунок score для фронтенда (React очікує значення для порівняння)
     risk_score = float(max(proba) * (2 if prediction == "High Risk" else 1 if prediction == "Medium Risk" else 0.5))
     
     prompt = f"""
@@ -174,25 +164,19 @@ def deep_analysis():
 
     prediction, proba = predict_logic(features)
     
-    # Конвертуємо в рядок для безпечної перевірки, якщо модель поверне текст, 
-    # або працюємо безпосередньо з числами
     pred_val = prediction
     
-    # Визначаємо індекс класу (0, 1 або 2)
     if isinstance(pred_val, (int, np.integer)):
         current_class = int(pred_val)
     else:
-        # Якщо модель повертає рядки типу "High Risk"
         pred_str = str(pred_val).lower()
         if "high" in pred_str: current_class = 2
         elif "medium" in pred_str: current_class = 1
         else: current_class = 0
 
-    # Виправляємо risk_score (використовуємо індекс класу для розрахунку)
     multiplier = 2 if current_class == 2 else 1 if current_class == 1 else 0.5
     risk_score = float(max(proba) * multiplier)
 
-    # ДРУКУЄМО ДЛЯ ПЕРЕВІРКИ
     print(f"DEBUG: prediction={prediction}, type={type(prediction)}, current_class={current_class}")
 
     result = {
@@ -205,7 +189,6 @@ def deep_analysis():
                 "Misses": float(features[0][1]),
                 "False Alarms": float(features[0][2]),
                 "Reaction Time": float(features[0][3]),
-                # ДОДАЙ ЦІ РЯДКИ:
                 "mood": float(raw_data["mood"]),
                 "anxiety": float(raw_data["anxiety"]),
                 "dembo": float(raw_data["dembo"])

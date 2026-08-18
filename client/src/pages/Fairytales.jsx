@@ -12,10 +12,8 @@ const Fairytales = () => {
   const { backendUrl, setUserData, setIsLoggedin } = useContext(AppContext);
   const [child, setChild] = useState(null);
 
-  // Текст для твого помічника (виправляє помилку 'assistantText' is not defined)
   const assistantText = "Приємного читання! 📖";
 
-  // Список шляхів до казок
   const stories = [
     { id: 1, path: "/twine/Fairytale.html" },
     { id: 2, path: "/twine/RabbitStory.html" },
@@ -55,12 +53,9 @@ const Fairytales = () => {
 
   return (
     <div className="min-h-screen bg-[#D4E6B8] flex flex-col font-sans selection:bg-[#2c4832] selection:text-white">
-      {/* Навбар */}
       <ChildNavbar childName={child?.name} onLogout={handleLogout} />
 
-      {/* Контейнер контенту */}
       <div className="flex-1 container mx-auto px-4 pb-20 flex flex-col items-center">
-        {/* ХЕДЕР (Заголовок + Назад) */}
         <div className="relative w-full max-w-5xl flex items-center justify-center py-6 mt-4">
           <button
             onClick={() => navigate(`/child-home/${childId}`)}
@@ -78,7 +73,6 @@ const Fairytales = () => {
           <div className="w-10 h-10 hidden sm:block"></div>
         </div>
 
-        {/* СПИСОК КАЗОК (Блоки без назв, тільки iframe) */}
         <div className="w-full flex flex-col gap-16 mt-4">
           {stories.map((story) => (
             <div key={story.id} className="w-full max-w-5xl mx-auto">
@@ -93,7 +87,6 @@ const Fairytales = () => {
           ))}
         </div>
 
-        {/* Кнопка закриття бібліотеки */}
         <button
           onClick={() => navigate(`/child-home/${childId}`)}
           className="mt-16 px-12 py-4 bg-[#2c4832] text-white rounded-full font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl"
@@ -102,7 +95,6 @@ const Fairytales = () => {
         </button>
       </div>
 
-      {/* ПЕРСОНАЖ-ПОМІЧНИК (КЛІКАБЕЛЬНИЙ) */}
       <div
         className="assistant-container group cursor-pointer"
         onClick={() => navigate(`/child-chatbot/${childId}`)}

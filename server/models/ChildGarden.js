@@ -8,7 +8,7 @@ const childGardenSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    flowers: { type: Number, default: 2 }, // кількість квіток
+    flowers: { type: Number, default: 2 }, 
     treeStage: { type: Number, default: 0 }, // 0-2
     clouds: { type: Number, default: 0 }, // 0-3
     rain: { type: Boolean, default: false },

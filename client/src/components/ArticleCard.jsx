@@ -17,7 +17,6 @@ const ArticleCard = ({ article }) => {
   return (
     <div className="group h-full">
       <div className="bg-[#F3F0E8] rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col h-full border border-gray-100 pt-2">
-        {/* Контейнер картинки з легким зумом при наведенні */}
         <div className="overflow-hidden bg-[#F3F0E8] flex items-center justify-center h-72">
           <img
             src={assets[article.image]}
@@ -26,7 +25,6 @@ const ArticleCard = ({ article }) => {
           />
         </div>
 
-        {/* Контентна частина */}
         <div className="p-4 flex flex-col items-center text-center flex-1">
           <h3 className="text-xl font-bold text-gray-800 mb-3 p-4 min-h-[3.5rem] flex items-center">
             {article.title}
@@ -36,7 +34,6 @@ const ArticleCard = ({ article }) => {
             {stripHtml(article.text)}
           </p>
 
-          {/* Кнопка по центру */}
           <div className="mt-auto pt-2">
             <button
               onClick={handleReadMore}

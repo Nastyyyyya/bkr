@@ -14,14 +14,12 @@ beforeEach(() => {
 });
 
 describe("DemboRubinstein", () => {
-  // ---------------- BASIC RENDER ----------------
   it("renders component with title", () => {
     renderComponent();
 
     expect(screen.getByText(/як ти почуваєшся/i)).toBeInTheDocument();
   });
 
-  // ---------------- SLIDERS ----------------
   it("renders all sliders", () => {
     renderComponent();
 
@@ -31,7 +29,6 @@ describe("DemboRubinstein", () => {
     expect(screen.getByLabelText(/настрій/i)).toBeInTheDocument();
   });
 
-  // ---------------- CHANGE VALUE ----------------
   it("updates slider value", () => {
     renderComponent();
 
@@ -42,7 +39,6 @@ describe("DemboRubinstein", () => {
     expect(screen.getByText("80%")).toBeInTheDocument();
   });
 
-  // ---------------- SUBMIT SUCCESS ----------------
   it("submits data successfully", async () => {
     axios.post.mockResolvedValue({
       data: { success: true },
@@ -61,7 +57,6 @@ describe("DemboRubinstein", () => {
     expect(screen.getByText(/твоя відповідь записана/i)).toBeInTheDocument();
   });
 
-  // ---------------- LOADING STATE ----------------
   it("shows loading state while submitting", async () => {
     let resolvePromise;
 
@@ -84,7 +79,6 @@ describe("DemboRubinstein", () => {
     });
   });
 
-  // ---------------- ERROR CASE ----------------
   it("shows alert on error", async () => {
     axios.post.mockRejectedValue(new Error("fail"));
 
@@ -99,7 +93,6 @@ describe("DemboRubinstein", () => {
     });
   });
 
-  // ---------------- BUTTON DISABLED ----------------
   it("disables button while loading", async () => {
     axios.post.mockImplementation(
       () => new Promise(() => {}), // never resolves

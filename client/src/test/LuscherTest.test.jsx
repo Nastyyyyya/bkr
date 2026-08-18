@@ -33,7 +33,6 @@ it("fills step 1 selection (branch: step===1)", () => {
 
   const buttons = screen.getAllByRole("button");
 
-  // клік 8 разів → branch selection1
   for (let i = 0; i < 8; i++) {
     fireEvent.click(buttons[i]);
   }

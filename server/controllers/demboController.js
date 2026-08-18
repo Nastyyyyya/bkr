@@ -1,6 +1,5 @@
 import DemboResult from "../models/DemboResult.js";
 
-// Зберегти результати тесту
 export const saveDemboResult = async (req, res) => {
   try {
     const { childId, results } = req.body;
@@ -21,7 +20,7 @@ export const saveDemboResult = async (req, res) => {
 
     res.json({
       success: true,
-      message: "Результати тесту Дембо-Рубінштейн збережено! 🎉",
+      message: "Результати тесту Дембо-Рубінштейн збережено!",
     });
   } catch (error) {
     console.error(error);
@@ -29,7 +28,6 @@ export const saveDemboResult = async (req, res) => {
   }
 };
 
-// Отримати історію тестів дитини (ТА САМА ФУНКЦІЯ, ЯКОЇ НЕ ВИСТАЧАЛО)
 export const getDemboResultsByChild = async (req, res) => {
   try {
     const { childId } = req.params;
@@ -41,7 +39,6 @@ export const getDemboResultsByChild = async (req, res) => {
   }
 };
 
-// Аналітика для батьків (потрібна для компонента ChildOverview)
 export const getDemboAnalytics = async (req, res) => {
   try {
     const { childId } = req.params;

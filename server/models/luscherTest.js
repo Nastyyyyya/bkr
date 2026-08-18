@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const luscherTestSchema = new mongoose.Schema({
   code: { type: String, required: true }, // +0, x2, =4, -3
   group: { type: String }, // ++, x, =, -
-  order: { type: Number }, // позиція у виборі
+  order: { type: Number },
   interpretation: {
     general: { type: String },
     parents: { type: String },

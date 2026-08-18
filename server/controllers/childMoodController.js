@@ -1,6 +1,5 @@
 import ChildMood from "../models/ChildMood.js";
 
-// Отримати локальну дату у форматі YYYY-MM-DD
 const getToday = () => {
   const d = new Date();
   const year = d.getFullYear();
@@ -9,13 +8,11 @@ const getToday = () => {
   return `${year}-${month}-${day}`;
 };
 
-// Зберегти настрій дитини
 export const saveMood = async (req, res) => {
   try {
     const { childId, mood } = req.body;
     const today = getToday();
 
-    // Перевірка, чи вже збережено настрій сьогодні
     const existing = await ChildMood.findOne({ childId, date: today });
     if (existing) {
       return res
@@ -35,7 +32,6 @@ export const saveMood = async (req, res) => {
   }
 };
 
-// Отримати настрій дитини за конкретний місяць
 export const getMonthMood = async (req, res) => {
   try {
     const { childId, year, month } = req.params;
@@ -58,7 +54,6 @@ export const getMonthMood = async (req, res) => {
   }
 };
 
-// Перевірка, чи є настрій на сьогодні + повертаємо його
 export const hasTodayMood = async (req, res) => {
   try {
     const { childId } = req.params;
@@ -68,7 +63,7 @@ export const hasTodayMood = async (req, res) => {
 
     res.json({
       hasMood: !!mood,
-      mood: mood?.mood || null, // це потрібно для ChildHome.jsx
+      mood: mood?.mood || null,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -78,7 +73,6 @@ export const hasTodayMood = async (req, res) => {
 export const getMoodAnalytics = async (req, res) => {
   try {
     const { childId } = req.params;
-    // Беремо останні 14 записів для глибшого аналізу
     const moods = await ChildMood.find({ childId })
       .sort({ date: -1 })
       .limit(14);
@@ -92,24 +86,20 @@ export const getMoodAnalytics = async (req, res) => {
     }
 
     const moodWeights = { happy: 5, neutral: 4, tired: 3, sad: 2, angry: 1 };
-    const scores = moods.map((m) => moodWeights[m.mood]).reverse(); // від старих до нових
+    const scores = moods.map((m) => moodWeights[m.mood]).reverse(); 
 
-    // 1. Обчислюємо середній бал
     const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
 
-    // 2. Аналізуємо тренд (порівнюємо першу половину тижня з другою)
     const mid = Math.floor(scores.length / 2);
     const firstHalf = scores.slice(0, mid);
     const secondHalf = scores.slice(mid);
     const firstAvg = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length;
     const secondAvg = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length;
 
-    // 3. Аналізуємо варіативність (стабільність)
     const variance = Math.max(...scores) - Math.min(...scores);
 
     let insight = "";
 
-    // ЛОГІКА ФОРМУВАННЯ ВИСНОВКУ
     if (secondAvg > firstAvg + 0.5) {
       insight =
         "Позитивна динаміка: Останніми днями емоційний стан дитини покращується. Вона стає більш відкритою та енергійною.";
@@ -130,7 +120,6 @@ export const getMoodAnalytics = async (req, res) => {
         "Рівний фон: Емоційний стан дитини стабільний, без різких стрибків. Вона почувається задовільно.";
     }
 
-    // 4. Додатковий маркер на конкретні емоції
     const lastThree = moods.slice(0, 3).map((m) => m.mood);
     if (lastThree.filter((m) => m === "angry").length >= 2) {
       insight +=

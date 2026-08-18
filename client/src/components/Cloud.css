@@ -1,7 +1,7 @@
 .cloudPane {
   margin: 0 auto;
 }
-/*main divs*/
+
 .infoPane {
   width: 1200px;
   height: 3000px;
@@ -13,7 +13,6 @@
   z-index: -5;
 }
 
-/*cloud position*/
 #cloud1 {
   opacity: 0.9;
   top: 50px;
@@ -172,7 +171,7 @@
   top: 100px;
   left: 130px;
 }
-/*circle shadows*/
+
 #circ1shadow,
 #circ2shadow,
 #circ3shadow,
@@ -294,12 +293,12 @@
   );
   top: 0px;
 }
-/*style the clouds*/
+
 .bigCloud {
   box-shadow: 10px 10px 5px 20px black inset;
   position: absolute;
 }
-/*style circles that make up clouds*/
+
 .smallCircle {
   height: 100px;
   width: 100px;
@@ -321,15 +320,6 @@
   border-radius: 100%;
   position: absolute;
 }
-/*Circle shadows*/
-
-/*#circShadow1 {
-    background: grey;
-    border-radius: 30px 20px 500px 20px;
-    
-    -webkit-transform: rotate(45deg);
-    z-index:2;
-}*/
 
 @-webkit-keyframes drift {
   from {

@@ -7,23 +7,19 @@ const Header = () => {
 
   return (
     <section className="section-hero relative w-full h-screen overflow-hidden flex flex-col justify-center mb-24">
-      {/* Фоновий ефект */}
       <div
         className="hero-effect absolute inset-0 z-0"
         style={{ backgroundImage: `url(${assets.bg_effect})` }}
       ></div>
 
-      {/* Бежева смуга */}
       <div className="relative z-10 w-full bg-[#F3F0E8] py-16 md:py-24">
         <div className="container mx-auto px-4 text-center">
-          {/* Логотип — додано w-64 для маленьких екранів */}
           <img
             src={assets.logo}
             alt="CALMLI"
             className="w-64 sm:w-80 md:w-[400px] lg:w-[500px] mx-auto mb-10 transition-all"
           />
 
-          {/* Текст — зменшено розмір (text-sm) для мобільних, на md повертається твій text-lg */}
           <div className="max-w-2xl mx-auto">
             <h1 className="text-sm md:text-lg font-medium text-[#2d3422] leading-relaxed px-4 md:px-0">
               Турбота про дитину починається з вашого емоційного балансу. Тут ви
@@ -32,7 +28,6 @@ const Header = () => {
             </h1>
           </div>
 
-          {/* Кнопка — текст теж трохи менший на мобільних (text-base) */}
           <button
             onClick={() => navigate("/test/start")}
             className="mt-10 px-10 py-3 bg-[#354024] text-white text-base md:text-lg font-medium rounded-full hover:bg-[#45542f] active:scale-95 transition-all duration-200 shadow-md"

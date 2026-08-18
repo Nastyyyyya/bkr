@@ -4,14 +4,12 @@ import axios from "axios";
 
 import SDQTest from "../components/SDQTest";
 
-// ---------------- MOCKS ----------------
 vi.mock("axios");
 
 beforeEach(() => {
   vi.clearAllMocks();
 });
 
-// ---------------- TEST DATA ----------------
 const mockTest = {
   questions: [
     { text: "Q1", scale: "emotional", reverse: false },
@@ -19,14 +17,12 @@ const mockTest = {
   ],
 };
 
-// ---------------- RENDER ----------------
 const renderComponent = (props = {}) => {
   return render(
     <SDQTest childId="123" backendUrl="http://localhost:4000" {...props} />,
   );
 };
 
-// ---------------- TESTS ----------------
 describe("SDQTest", () => {
   it("shows loading initially", async () => {
     axios.get.mockResolvedValueOnce({ data: mockTest });
@@ -55,7 +51,7 @@ describe("SDQTest", () => {
 
     const buttons = await screen.findAllByRole("button");
 
-    fireEvent.click(buttons[0]); // "Невірно"
+    fireEvent.click(buttons[0]);
 
     expect(buttons[0]).toBeDefined();
   });
@@ -85,11 +81,9 @@ describe("SDQTest", () => {
 
     const answerButtons = await screen.findAllByRole("button");
 
-    // Q1
     fireEvent.click(answerButtons[0]);
     fireEvent.click(screen.getByText(/далі/i));
 
-    // Q2
     await waitFor(() => screen.getByText("Q2"));
     const buttons2 = screen.getAllByRole("button");
 

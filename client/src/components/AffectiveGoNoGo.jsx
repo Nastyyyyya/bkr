@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
-const TOTAL_TIME = 60; // 1 хвилина
-const INTERVAL_TIME = 1300; // Час показу одного кружечка
+const TOTAL_TIME = 60;
+const INTERVAL_TIME = 1300;
 
 const AffectiveGoNoGoKeyboard = ({ childId, backendUrl }) => {
   const [gameState, setGameState] = useState("ready");
@@ -23,9 +23,7 @@ const AffectiveGoNoGoKeyboard = ({ childId, backendUrl }) => {
     lastChangeTime: 0,
   });
 
-  // Логіка появи нового кружечка
   const nextCircle = useCallback(() => {
-    // Якщо попередній був зеленим і дитина не натиснула - це пропуск
     if (
       stateRef.current.currentColor === "green" &&
       !stateRef.current.hasClicked
@@ -33,7 +31,7 @@ const AffectiveGoNoGoKeyboard = ({ childId, backendUrl }) => {
       setStats((prev) => ({ ...prev, misses: prev.misses + 1 }));
     }
 
-    const isGo = Math.random() < 0.7; // 70% Go, 30% No-Go
+    const isGo = Math.random() < 0.7;
     const newColor = isGo ? "green" : "red";
 
     setCurrentColor(newColor);
@@ -50,7 +48,6 @@ const AffectiveGoNoGoKeyboard = ({ childId, backendUrl }) => {
     };
   }, []);
 
-  // Завершення гри та запис у БД
   const finishGame = useCallback(
     async (finalStats) => {
       setGameState("finished");
@@ -134,7 +131,6 @@ const AffectiveGoNoGoKeyboard = ({ childId, backendUrl }) => {
   // Обробка пробілу
   const handleKeyDown = useCallback(
     (e) => {
-      // ЗАПОБІГАННЯ СКРОЛУ ПРИ НАТИСКАННІ ПРОБІЛУ
       if (e.code === "Space") {
         e.preventDefault();
       }
@@ -218,7 +214,6 @@ const AffectiveGoNoGoKeyboard = ({ childId, backendUrl }) => {
       `}</style>
       {gameState === "ready" && (
         <div className="flex flex-col items-center justify-center w-full max-w-2xl mx-auto bg-[#f8f9f5] p-10 sm:p-16 rounded-[50px] shadow-[0_20px_50px_rgba(44,72,50,0.1)] border border-white relative overflow-hidden">
-          {/* Декоративні елементи на фоні */}
           <div className="absolute top-[-20px] right-[-20px] w-32 h-32 bg-emerald-100/50 rounded-full blur-3xl"></div>
           <div className="absolute bottom-[-20px] left-[-20px] w-32 h-32 bg-rose-100/50 rounded-full blur-3xl"></div>
 

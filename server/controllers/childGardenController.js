@@ -1,7 +1,6 @@
 import ChildMood from "../models/ChildMood.js";
 import ChildGarden from "../models/ChildGarden.js";
 
-// Логіка розрахунку стану саду
 const calculateGardenState = (moods) => {
   let flowers = 2;
   let treeStage = 0;
@@ -10,7 +9,6 @@ const calculateGardenState = (moods) => {
   let beaver = false;
   let badStreak = 0;
 
-  // обробка від старого до нового
   for (let i = moods.length - 1; i >= 0; i--) {
     const mood = moods[i].mood;
 
@@ -41,7 +39,6 @@ const calculateGardenState = (moods) => {
   return { flowers, treeStage, clouds, rain, beaver };
 };
 
-// GET /api/child-garden/:childId
 export const getGarden = async (req, res) => {
   try {
     const { childId } = req.params;

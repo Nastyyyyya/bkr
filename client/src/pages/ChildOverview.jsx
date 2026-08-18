@@ -20,9 +20,7 @@ import {
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-// Використовуємо деструктуризацію прямо в аргументах функції
 const getSDQAnalysis = (scores) => {
-  // Тепер ми використовуємо scores, щоб витягнути дані (це задовольнить ESLint)
   if (!scores) return { categories: {}, getLevelInfo: () => ({}) };
 
   const categories = {
@@ -49,7 +47,6 @@ const getSDQAnalysis = (scores) => {
   };
 
   const getLevelInfo = (score, key) => {
-    // Тут ми неявно використовуємо логіку, що базується на вхідних даних
     if (key === "prosocial") {
       if (score >= 6)
         return { text: "Норма", color: "text-green-500", bg: "bg-green-50" };
@@ -78,15 +75,12 @@ const ChildOverview = () => {
   const [loading, setLoading] = useState(true);
   const reportRef = useRef(null);
 
-  // Дані настрою
   const [moodHistory, setMoodHistory] = useState([]);
   const [moodInsight, setMoodInsight] = useState("");
   const [viewRange, setViewRange] = useState(7);
 
-  // Дані Дембо
   const [demboData, setDemboData] = useState(null);
 
-  // Дані Люшера
   const [luscherData, setLuscherData] = useState(null);
   const [wilsonData, setWilsonData] = useState(null);
   const [goNoGoData, setGoNoGoData] = useState(null);
@@ -100,17 +94,15 @@ const ChildOverview = () => {
   const handleDeepAnalysis = async () => {
     setIsAnalysing(true);
     try {
-      // 1. Отримуємо дані з вашого основного бекенда (Node.js)
       const resData = await axios.get(
         `${backendUrl}/api/analytics/monthly/${id}`,
       );
 
       if (resData.data.success) {
-        // 2. Надсилаємо дані в Python
         const resPython = await axios.post(
           `http://localhost:8000/analyze-dynamics`,
           {
-            childId: id, // Додаємо ID дитини
+            childId: id,
             mood_history: resData.data.data.moods,
             dembo_history: resData.data.data.dembo,
             anxiety_history: resData.data.data.anxiety,
@@ -118,7 +110,7 @@ const ChildOverview = () => {
             gonogo_history: resData.data.data.gonogo,
           },
           {
-            withCredentials: false, // Вимикаємо передачу куків для порту 8000, щоб уникнути помилки CORS
+            withCredentials: false,
           },
         );
 
@@ -143,7 +135,6 @@ const ChildOverview = () => {
       speed: { status: "", desc: "" },
     };
 
-    // Увага
     if (hitRate >= 95) {
       analysis.attention.status = "Видатна";
       analysis.attention.desc = "Відмінна концентрація.";
@@ -156,7 +147,6 @@ const ChildOverview = () => {
       analysis.attention.color = "text-amber-600";
     }
 
-    // Гальмування
     if (falseAlarmRate <= 25) {
       analysis.inhibition.status = "Відмінне";
       analysis.inhibition.desc = "Чудовий самоконтроль.";
@@ -171,7 +161,6 @@ const ChildOverview = () => {
       analysis.inhibition.color = "text-red-600";
     }
 
-    // ВИКОРИСТОВУЄМО avgReactionTime (щоб прибрати помилку)
     if (avgReactionTime < 300) {
       analysis.speed.status = "Висока";
       analysis.speed.desc = "Дуже швидка реакція.";
@@ -248,8 +237,6 @@ const ChildOverview = () => {
 
         if (resWilson.data.success && resWilson.data.history.length > 0) {
           const latest = resWilson.data.history[0];
-          // Тут ми припускаємо, що бекенд повертає об'єкт з інтерпретацією.
-          // Якщо бекенд повертає тільки ID, знадобиться додатковий пошук опису.
           setWilsonData(latest);
         }
 
@@ -258,7 +245,7 @@ const ChildOverview = () => {
         }
 
         if (resGoNoGo.data.success && resGoNoGo.data.history.length > 0) {
-          setGoNoGoData(resGoNoGo.data.history[0]); // Беремо останній тест
+          setGoNoGoData(resGoNoGo.data.history[0]);
         }
 
         if (resDembo.data.success && resDembo.data.data) {
@@ -271,7 +258,7 @@ const ChildOverview = () => {
           setLetter(resLetter.data.letter);
         }
         if (resSDQ.data.success && resSDQ.data.history?.length > 0) {
-          setSdqData(resSDQ.data.history[0]); // Беремо найсвіжіший тест
+          setSdqData(resSDQ.data.history[0]);
         }
       } catch (error) {
         console.error("Помилка завантаження:", error);
@@ -295,18 +282,16 @@ const ChildOverview = () => {
     const downloadBtn = document.getElementById("download-btn");
     const backBtn = document.getElementById("back-btn");
 
-    // 1. Використовуємо opacity замість visibility, щоб елемент не зникав з DOM
     if (downloadBtn) downloadBtn.style.opacity = "0";
     if (backBtn) backBtn.style.opacity = "0";
 
-    // Додаємо невелику затримку, щоб переконатися, що всі графіки відрендерені
     setTimeout(() => {
       html2canvas(input, {
         scale: 2,
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#b7c1a8",
-        logging: true, // Вмикаємо логи, щоб бачити помилки в консолі браузера
+        logging: true,
         width: input.offsetWidth,
         height: input.offsetHeight,
       })
@@ -323,11 +308,9 @@ const ChildOverview = () => {
           let heightLeft = totalHeightMm;
           let position = 0;
 
-          // Перша сторінка
           pdf.addImage(imgData, "PNG", 0, position, pdfWidth, totalHeightMm);
           heightLeft -= pdfHeight;
 
-          // Наступні сторінки
           while (heightLeft > 0) {
             position = heightLeft - totalHeightMm;
             pdf.addPage();
@@ -337,7 +320,6 @@ const ChildOverview = () => {
 
           pdf.save(`Звіт_${child?.name || "дитини"}.pdf`);
 
-          // Повертаємо кнопки
           if (downloadBtn) downloadBtn.style.opacity = "1";
           if (backBtn) backBtn.style.opacity = "1";
         })
@@ -346,7 +328,7 @@ const ChildOverview = () => {
           if (downloadBtn) downloadBtn.style.opacity = "1";
           if (backBtn) backBtn.style.opacity = "1";
         });
-    }, 500); // 0.5 секунди затримки
+    }, 500);
   };
 
   if (loading) {
@@ -371,12 +353,10 @@ const ChildOverview = () => {
     >
       <div className="max-w-7xl mx-auto bg-[#f3f0e8] rounded-[40px] p-8 md:p-12 shadow-2xl">
         <header className="text-center mb-8 flex flex-col items-center">
-          {/* Назва звіту (дрібний підпис зверху) */}
           <span className="text-[10px] uppercase tracking-[0.3em] text-[#354024]/60 font-bold mb-4">
             Персональний звіт для батьків
           </span>
 
-          {/* Ім'я дитини з елегантною лінією */}
           <div className="relative mb-8">
             <h1 className="text-5xl font-serif font-bold text-[#354024]">
               {child.name}
@@ -384,7 +364,6 @@ const ChildOverview = () => {
             <div className="w-12 h-[2px] bg-[#354024]/20 mx-auto mt-4"></div>
           </div>
 
-          {/* Кнопка: тепер вона не на всю ширину, що додає "преміальності" */}
           <button
             onClick={() => navigate(`/child-home/${child._id}`)}
             className="px-10 py-4 rounded-full bg-[#354024] text-[#f3f0e8] text-[11px] font-bold uppercase tracking-[0.15em] 
@@ -479,7 +458,7 @@ const ChildOverview = () => {
           </div>
         </section>
 
-        {/* --- БЛОК 2: ДЕМБО (ОНОВЛЕНО) --- */}
+        {/* --- БЛОК 2: ДЕМБО  --- */}
         {demboData && (
           <section className="mb-12 bg-white rounded-3xl p-6 shadow-sm border border-[#354024]/5">
             <h2 className="text-xl font-bold text-[#354024] mb-6">
@@ -540,7 +519,6 @@ const ChildOverview = () => {
               </ResponsiveContainer>
             </div>
 
-            {/* Картки з точними цифрами */}
             <div className="grid grid-cols-2 gap-4 mb-8">
               {[
                 { label: "Здоров'я", val: demboData.data.health },
@@ -622,7 +600,6 @@ const ChildOverview = () => {
                 </div>
               </div>
 
-              {/* Дата в кутку */}
               <div className="hidden sm:block text-right">
                 <p className="text-[10px] font-bold text-[#2c4832] uppercase tracking-widest">
                   Дата тестування
@@ -633,9 +610,7 @@ const ChildOverview = () => {
               </div>
             </div>
 
-            {/* Картка з інтерпретацією */}
             <div className="relative overflow-hidden bg-[#F9FBF4] rounded-[30px] p-7 border border-[#D4E6B8]/30">
-              {/* Декоративний елемент на фоні */}
               <div className="absolute top-[-20px] right-[-20px] text-8xl opacity-[0.03] pointer-events-none">
                 🌳
               </div>
@@ -652,14 +627,13 @@ const ChildOverview = () => {
               </div>
             </div>
 
-            {/* Мобільна дата (показується тільки на малих екранах) */}
             <p className="mt-4 sm:hidden text-[10px] text-[#2c4832]/90 italic text-right">
               {new Date(wilsonData.date).toLocaleDateString()}
             </p>
           </section>
         )}
 
-        {/* --- БЛОК 5: GO/NO-GO (КОНТРОЛЬ ІМПУЛЬСИВНОСТІ) --- */}
+        {/* --- БЛОК 5: GO/NO-GO  --- */}
         {goNoGoData &&
           (() => {
             const analysis = getGoNoGoAnalysis(goNoGoData);
@@ -690,9 +664,7 @@ const ChildOverview = () => {
                   </div>
                 </div>
 
-                {/* Картки показників */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                  {/* Увага */}
                   <div className="p-6 bg-[#F8FAFC] rounded-[32px] border border-blue-100/50">
                     <p className="text-[10px] font-black text-blue-700 uppercase tracking-widest mb-3">
                       Рівень уваги
@@ -705,7 +677,6 @@ const ChildOverview = () => {
                     </p>
                   </div>
 
-                  {/* Гальмування */}
                   <div className="p-6 bg-[#FFF9F9] rounded-[32px] border border-red-100/50">
                     <p className="text-[10px] font-black text-red-700 uppercase tracking-widest mb-3">
                       Процеси гальмування
@@ -718,7 +689,6 @@ const ChildOverview = () => {
                     </p>
                   </div>
 
-                  {/* Швидкість */}
                   <div className="p-6 bg-[#FEFBF6] rounded-[32px] border border-amber-100/50">
                     <p className="text-[10px] font-black text-amber-700 uppercase tracking-widest mb-3">
                       Реакція моторики
@@ -737,8 +707,6 @@ const ChildOverview = () => {
                   </div>
                 </div>
 
-                {/* Рекомендації */}
-                {/* Рекомендації */}
                 <div className="bg-[#B7C1A8] p-8 rounded-[32px] border border-[#2c4832]/10 relative overflow-hidden">
                   <h4 className="text-[11px] font-black text-[#2c4832] uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
                     Рекомендації для розвитку
@@ -774,7 +742,7 @@ const ChildOverview = () => {
             );
           })()}
 
-        {/* --- БЛОК 6: ПСИХОЛОГІЧНИЙ ПРОФІЛЬ (SDQ) --- */}
+        {/* --- БЛОК 6: SDQ --- */}
         {sdqData &&
           (() => {
             const { categories, getLevelInfo } = getSDQAnalysis(sdqData.scores);
@@ -808,12 +776,10 @@ const ChildOverview = () => {
                         key={key}
                         className={`p-6 rounded-[32px] border transition-all ${info.bg} border-[#2c4832]/10 shadow-sm flex flex-col justify-between min-h-[150px]`}
                       >
-                        {/* Верхня частина: Назва та статус */}
                         <div className="flex justify-between items-start mb-4">
                           <span className="text-[11px] font-black uppercase tracking-[0.15em] text-[#2c4832]">
                             {categories[key].label}
                           </span>
-                          {/* Статус тепер має чітку темну плашку для читабельності */}
                           <span
                             className={`text-[10px] font-black uppercase px-3 py-1 rounded-lg border border-[#2c4832]/10 bg-white/80 shadow-sm ${info.color}`}
                           >
@@ -821,7 +787,6 @@ const ChildOverview = () => {
                           </span>
                         </div>
 
-                        {/* Нижня частина: Опис та великий бал */}
                         <div className="flex items-end justify-between gap-4">
                           <p className="text-[12px] text-[#2c4832] leading-tight max-w-[70%] font-medium">
                             {categories[key].desc}
@@ -847,7 +812,7 @@ const ChildOverview = () => {
                     </div>
                     <div>
                       <h4 className="font-bold text-sm mb-1 uppercase tracking-wider">
-                        Порада психолога
+                        Порада
                       </h4>
                       <p className="text-xs opacity-70 leading-relaxed">
                         {sdqData.scores.total >= 15
@@ -893,7 +858,6 @@ const ChildOverview = () => {
             </div>
 
             <div className="flex flex-col md:flex-row gap-8 items-center">
-              {/* Великий індикатор поточного стану */}
               <div className="relative w-32 h-32 flex items-center justify-center bg-[#f3f0e8] rounded-full border-4 border-white shadow-inner">
                 <span className="text-5xl">
                   {anxietyData[0].level >= 9
@@ -937,13 +901,11 @@ const ChildOverview = () => {
         {/* --- БЛОК 8: ЛИСТ В МАЙБУТНЄ --- */}
         {letter && (
           <section className="mb-12 relative">
-            {/* Декоративна скріпка або печатка */}
             <div className="absolute -top-4 -right-2 z-10 bg-[#354024] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transform rotate-12 border-4 border-white font-bold">
               ✉️
             </div>
 
             <div className="bg-[#fffdfa] rounded-2xl p-8 shadow-md border-t-8 border-[#354024] relative overflow-hidden">
-              {/* Фоновий візерунок "в лінійку" */}
               <div
                 className="absolute inset-0 opacity-[0.03] pointer-events-none"
                 style={{
@@ -1011,7 +973,6 @@ const ChildOverview = () => {
 
           {deepAnalysis?.success && (
             <div className="mt-20 space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
-              {/* Додаємо логіку визначення класу прямо з тексту тлумачення */}
               {(() => {
                 const predictedClass = deepAnalysis.predicted_class;
 
@@ -1030,7 +991,6 @@ const ChildOverview = () => {
 
                 return (
                   <div className="bg-[#f3f0e8] p-8 md:p-10 rounded-[50px] shadow-2xl border-2 border-[#b7c1a8]">
-                    {/* 1. ЗАГОЛОВОК ТА СТАТУС */}
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 border-b border-[#b7c1a8] pb-8">
                       <div>
                         <h3 className="text-3xl font-bold text-[#354024] flex items-center gap-3 italic">
@@ -1050,7 +1010,6 @@ const ChildOverview = () => {
                       </div>
                     </div>
 
-                    {/* 2. РОЗШИФРОВКА СТАНІВ */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
                       {[
                         {
@@ -1087,7 +1046,6 @@ const ChildOverview = () => {
                       ))}
                     </div>
 
-                    {/* ПСИХОЕМОЦІЙНИЙ ФОН (Відновлено логіку відображення) */}
                     <div className="mb-10">
                       <h4 className="font-bold mb-5 text-[#354024] uppercase text-[13px] tracking-widest px-2">
                         Психоемоційний фон
@@ -1124,7 +1082,6 @@ const ChildOverview = () => {
                       </div>
                     </div>
 
-                    {/* КОГНІТИВНІ ПОКАЗНИКИ */}
                     <div className="space-y-6 mb-12">
                       <h4 className="font-bold text-[#354024] uppercase text-[13px] tracking-widest px-2">
                         Нейродинамічні показники:
@@ -1132,7 +1089,6 @@ const ChildOverview = () => {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                         {Object.entries(deepAnalysis.features || {}).map(
                           ([key, value]) => {
-                            // Пропускаємо психологію, бо вона вже виведена вище
                             if (
                               ["mood", "anxiety", "dembo"].includes(
                                 key.toLowerCase(),
@@ -1177,8 +1133,6 @@ const ChildOverview = () => {
                       </div>
                     </div>
 
-                    {/* AI ТЛУМАЧЕННЯ */}
-                    {/* 5. AI ТЛУМАЧЕННЯ */}
                     <div className="w-full p-10 rounded-[45px] bg-[#354024] text-[#f3f0e8] shadow-2xl border-4 border-[#b7c1a8]">
                       <div className="flex items-center gap-4 mb-6">
                         <div className="p-3 bg-[#b7c1a8] rounded-2xl text-[#354024]">

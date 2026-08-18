@@ -6,9 +6,7 @@ const Footer = () => {
   return (
     <footer className="bg-[#354024] text-[#F3F0E8] py-12 px-4 md:px-16 mt-20">
       <div className="container mx-auto">
-        {/* Рівномірна сітка на 4 колонки */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 text-left">
-          {/* 1. Лого та слоган */}
           <div className="flex flex-col">
             <Link to="/">
               <img
@@ -22,7 +20,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* 2. Сторінки */}
           <div className="flex flex-col">
             <h4 className="font-bold text-lg mb-6">Сторінки</h4>
             <ul className="flex flex-col gap-3 text-sm opacity-100">
@@ -57,7 +54,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* 3. Юридична інформація */}
           <div className="flex flex-col">
             <h4 className="font-bold text-lg mb-6">Юридична інформація</h4>
             <ul className="flex flex-col gap-3 text-sm opacity-100">
@@ -74,7 +70,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* 4. Контакти */}
           <div className="flex flex-col">
             <h4 className="font-bold text-lg mb-6">Зв’язатися з нами</h4>
             <ul className="flex flex-col gap-3 text-sm opacity-100">
@@ -98,7 +93,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Копірайт чітко по центру */}
         <div className="border-t border-white/10 mt-12 pt-8 flex justify-center items-center">
           <p className="text-sm opacity-100">© 2026 Паславська Анастасія</p>
         </div>

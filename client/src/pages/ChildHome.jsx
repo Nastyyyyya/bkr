@@ -29,7 +29,6 @@ const ChildHome = () => {
   const [garden, setGarden] = useState(null);
   const [todayMood, setTodayMood] = useState("happy");
 
-  // ЛОГІКА ПЕРСОНАЖА
   const [assistantText, setAssistantText] = useState("Привіт! Давай пограємо?");
 
   const sectionPhrases = {
@@ -122,7 +121,6 @@ const ChildHome = () => {
     <div className="min-h-screen bg-[#D4E6B8]">
       <ChildNavbar childName={child?.name} onLogout={handleChildLogout} />
 
-      {/* ПЕРСОНАЖ-ПОМІЧНИК (КЛІКАБЕЛЬНИЙ) */}
       <div
         className="assistant-container group cursor-pointer"
         onClick={() => navigate(`/child-chatbot/${childId}`)}

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const anxietySchema = new mongoose.Schema({
   childId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "child", // Переконайтеся, що назва моделі дитини збігається
+    ref: "child", 
     required: true,
   },
   level: {
@@ -14,7 +14,7 @@ const anxietySchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    required: true, // Наприклад: "Спокій", "Тривога", "Паніка"
+    required: true, 
   },
   date: {
     type: Date,

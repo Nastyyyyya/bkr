@@ -10,10 +10,8 @@ import axios from "axios";
 
 import MoodModal from "../components/MoodModal";
 
-// ---------------- MOCKS ----------------
 vi.mock("axios");
 
-// щоб не падали імпорти з MoodConfig
 vi.mock("../components/MoodConfig", () => ({
   moods: [
     { id: "happy", emoji: "😀", label: "happy" },
@@ -35,7 +33,6 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
-// ---------------- HELPERS ----------------
 const renderModal = (props = {}) => {
   const defaultProps = {
     childId: "123",
@@ -47,7 +44,6 @@ const renderModal = (props = {}) => {
   return render(<MoodModal {...defaultProps} {...props} />);
 };
 
-// ---------------- TESTS ----------------
 describe("MoodModal", () => {
   it("renders step 1 moods", () => {
     renderModal();

@@ -16,7 +16,6 @@ const TestResult = () => {
   useEffect(() => {
     if (!test || !answers) return;
 
-    // 1. Обчислюємо середні бали
     const blocks = {};
     test.questions.forEach((q, i) => {
       if (!blocks[q.block]) blocks[q.block] = [];
@@ -30,18 +29,14 @@ const TestResult = () => {
       averages[block] = sum / arr.length;
     });
 
-    // 2. Визначаємо стилі для рекомендацій (всі, що мають високий бал)
-    // Знаходимо максимальний бал
     const maxScore = Math.max(...Object.values(averages));
 
-    // Беремо всі стилі, які набрали максимум (або дуже близькі до нього)
     const topStyles = Object.keys(averages).filter(
       (style) => averages[style] === maxScore || averages[style] > 3.5,
     );
 
     setResult({ averages, topStyles });
 
-    // 3. Запит до бекенду
     const fetchArticles = async () => {
       try {
         setLoading(true);
@@ -85,7 +80,6 @@ const TestResult = () => {
             Ваш результат
           </h1>
 
-          {/* Бали по категоріях */}
           <div className="grid md:grid-cols-3 gap-6 mb-10">
             {Object.entries(result.averages).map(([block, avg]) => (
               <div
@@ -102,7 +96,6 @@ const TestResult = () => {
             ))}
           </div>
 
-          {/* Висновок */}
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-2xl font-bold text-[#2d3422] mb-4">
               Переважаючий стиль: {result.topStyles.join(" та ")}
@@ -117,7 +110,6 @@ const TestResult = () => {
           </div>
         </div>
 
-        {/* Секція статей */}
         <section>
           <h2 className="text-2xl font-bold text-[#2d3422] mb-8 flex items-center gap-3">
             <span className="w-8 h-[2px] bg-[#354024]"></span>

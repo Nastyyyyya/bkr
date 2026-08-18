@@ -1,32 +1,22 @@
 # import numpy as np
 # from datetime import datetime, timedelta
 
-# # -----------------------------
-# # helper: trend (нахил динаміки)
-# # -----------------------------
 # def calculate_trend(values):
 #     if len(values) < 2:
 #         return 0.0
 #     return float(np.polyfit(range(len(values)), values, 1)[0])
 
 
-# # -----------------------------
-# # MAIN AI ANALYSIS
-# # -----------------------------
 # def perform_deep_analysis(data):
 #     try:
-#         # -----------------------------
-#         # 1. отримуємо дані з фронта
-#         # -----------------------------
+
 #         mood = data.get("mood_history", [])
 #         dembo = data.get("dembo_history", [])
 #         anxiety = data.get("anxiety_history", [])
 #         sdq = data.get("sdq_history", [])
 #         gonogo = data.get("gonogo_history", [])
 
-#         # -----------------------------
-#         # 2. перетворення в числа
-#         # -----------------------------
+
 #         mood_values = [m.get("value", 3) for m in mood] if mood else [3]
 #         anxiety_values = [a.get("level", 5) for a in anxiety] if anxiety else [5]
 
@@ -39,14 +29,11 @@
 #             s.get("total", 10) for s in sdq
 #         ] if sdq else [10]
 
-#         # GoNoGo (імпульсивність)
 #         gonogo_values = [
 #             g.get("falseAlarmRate", 0.3) for g in gonogo
 #         ] if gonogo else [0.3]
 
-#         # -----------------------------
-#         # 3. СЕРЕДНІ + ТРЕНДИ
-#         # -----------------------------
+
 #         avg_mood = float(np.mean(mood_values))
 #         avg_anxiety = float(np.mean(anxiety_values))
 #         avg_dembo = float(np.mean(dembo_values))
@@ -56,16 +43,12 @@
 #         mood_trend = calculate_trend(mood_values)
 #         anxiety_trend = calculate_trend(anxiety_values)
 
-#         # -----------------------------
-#         # 4. НОРМАЛІЗАЦІЯ (0–1 шкала)
-#         # -----------------------------
+
 #         norm_anxiety = avg_anxiety / 10
 #         norm_mood = avg_mood / 5
 #         norm_sdq = avg_sdq / 25
 
-#         # -----------------------------
-#         # 5. "AI SCORE" (ВАЖЛИВІСТЬ МОДЕЛІ)
-#         # -----------------------------
+
 #         risk_score = (
 #             norm_anxiety * 0.35 +
 #             (1 - norm_mood) * 0.25 +
@@ -73,9 +56,7 @@
 #             avg_impulsivity * 0.2
 #         )
 
-#         # -----------------------------
-#         # 6. КЛАСИФІКАЦІЯ (AI OUTPUT)
-#         # -----------------------------
+
 #         if risk_score > 0.65:
 #             risk_level = "high_risk"
 #             summary = "Виявлено стабільно високий рівень емоційного навантаження протягом місяця."
@@ -86,9 +67,7 @@
 #             risk_level = "stable"
 #             summary = "Емоційний стан протягом місяця стабільний."
 
-#         # -----------------------------
-#         # 7. AI INSIGHTS (НЕ IF-ELSE)
-#         # -----------------------------
+
 #         insights = []
 
 #         if anxiety_trend > 0.2:
@@ -102,9 +81,6 @@
 #         if avg_impulsivity > 0.5:
 #             insights.append("Підвищена імпульсивність у поведінці.")
 
-#         # -----------------------------
-#         # 8. ПОВЕРНЕННЯ РЕЗУЛЬТАТУ
-#         # -----------------------------
 #         return {
 #             "success": True,
 #             "risk_level": risk_level,

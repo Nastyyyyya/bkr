@@ -1,7 +1,5 @@
-// server/controllers/childController.js
 import childModel from "../models/childModel.js";
 
-// Додавання дитини без PIN
 export const addChild = async (req, res) => {
   try {
     const parentId = req.userId;
@@ -11,7 +9,6 @@ export const addChild = async (req, res) => {
       return res.json({ success: false, message: "Усі поля обовʼязкові" });
     }
 
-    // Перевірка унікального username тільки для цього батька
     const existingChild = await childModel.findOne({ username, parentId });
     if (existingChild) {
       return res.json({
@@ -29,7 +26,7 @@ export const addChild = async (req, res) => {
   }
 };
 
-// Список дітей
+
 export const getMyChildren = async (req, res) => {
   try {
     const parentId = req.userId;
@@ -40,7 +37,6 @@ export const getMyChildren = async (req, res) => {
   }
 };
 
-// Дані конкретної дитини
 export const getChildById = async (req, res) => {
   try {
     const { childId } = req.params;

@@ -1,6 +1,5 @@
 import anxietyModel from "../models/anxietyModel.js";
 
-// Збереження результату
 export const saveAnxietyResult = async (req, res) => {
   try {
     const { childId } = req.params;
@@ -27,7 +26,7 @@ export const saveAnxietyResult = async (req, res) => {
       childId,
       level,
       status,
-      advice, // Додаємо поле порад у модель, якщо воно там є
+      advice,
     });
 
     await newEntry.save();
@@ -37,7 +36,6 @@ export const saveAnxietyResult = async (req, res) => {
   }
 };
 
-// Отримання історії
 export const getAnxietyHistory = async (req, res) => {
   try {
     const { childId } = req.params;

@@ -37,10 +37,8 @@ const Articles = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Навбар йде першим блоком */}
       <Navbar />
 
-      {/* Контент йде другим блоком. Прибираємо pt-32, ставимо звичайний py-10 (зверху і знизу) */}
       <main className="container mx-auto py-10 px-4 mt-32">
         {/* Грід для статей */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-28">

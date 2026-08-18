@@ -69,7 +69,6 @@ const ChildrenAnxietyMeter = ({ childId, backendUrl }) => {
   };
 
   return (
-    /* Контейнер тепер max-w-4xl, як у WilsonTreeTest */
     <div className="flex flex-col items-center bg-[#f8f9f5] p-8 sm:p-12 rounded-[40px] shadow-[0_20px_50px_rgba(44,72,50,0.08)] border border-white w-full max-w-4xl mx-auto my-10 select-none">
       <div className="max-w-md w-full flex flex-col items-center">
         <h2 className="text-2xl sm:text-3xl font-black text-[#2c4832] mb-2 uppercase tracking-tight text-center">
@@ -80,14 +79,12 @@ const ChildrenAnxietyMeter = ({ childId, backendUrl }) => {
         </p>
 
         <div className="relative flex items-center justify-center h-[450px] w-full gap-8 sm:gap-12">
-          {/* СМАЙЛИК */}
           <div className="w-20 flex justify-center items-center">
             <div className="text-7xl transition-all duration-500 transform hover:rotate-12">
               {getEmoji(tempLevel)}
             </div>
           </div>
 
-          {/* ГРАДУСНИК (SVG) */}
           <div className="relative w-24 h-full flex flex-col items-center">
             <svg
               width="80"
@@ -143,7 +140,6 @@ const ChildrenAnxietyMeter = ({ childId, backendUrl }) => {
             </svg>
           </div>
 
-          {/* КНОПКИ-ЦИФРИ */}
           <div className="flex flex-col justify-between h-[310px] mb-[90px]">
             {scale.map((num) => (
               <button

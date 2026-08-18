@@ -6,7 +6,6 @@ import axios from "axios";
 import ChildNavbar from "../components/ChildNavbar";
 import { AppContext } from "../context/AppContext";
 
-// ---------------- MOCKS ----------------
 vi.mock("axios");
 
 vi.mock("react-toastify", () => ({
@@ -18,7 +17,6 @@ vi.mock("react-toastify", () => ({
 
 import { toast } from "react-toastify";
 
-// ---------------- MOCK CONTEXT ----------------
 const setUserData = vi.fn();
 const setIsLoggedin = vi.fn();
 
@@ -28,7 +26,6 @@ const mockContext = {
   setIsLoggedin,
 };
 
-// ---------------- RENDER ----------------
 const renderNavbar = (initialRoute = "/child-home/123") => {
   return render(
     <AppContext.Provider value={mockContext}>
@@ -41,7 +38,6 @@ const renderNavbar = (initialRoute = "/child-home/123") => {
   );
 };
 
-// ---------------- TESTS ----------------
 describe("ChildNavbar", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -113,8 +109,6 @@ describe("ChildNavbar", () => {
     });
   });
 });
-
-// додай в той самий файл
 
 import { useNavigate } from "react-router-dom";
 

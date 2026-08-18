@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import axios from "axios";
 
 const FutureLetter = ({ childId, backendUrl }) => {
@@ -89,7 +89,6 @@ const FutureLetter = ({ childId, backendUrl }) => {
         </p>
       </div>
 
-      {/* Old Letter View */}
       <AnimatePresence>
         {isSunday && oldLetter && showOldLetter && !isLocked && (
           <motion.div
@@ -114,15 +113,12 @@ const FutureLetter = ({ childId, backendUrl }) => {
         )}
       </AnimatePresence>
 
-      {/* ENVELOPE VISUAL */}
       <div
         className="relative w-[300px] h-[220px] flex items-end justify-center mb-4"
         style={{ perspective: "1200px" }}
       >
-        {/* Back of envelope */}
         <div className="absolute bottom-0 w-full h-[180px] bg-[#e1e4d8] rounded-b-3xl shadow-inner border border-[#2c4832]/5"></div>
 
-        {/* Paper/Letter */}
         <AnimatePresence>
           {!isLocked && !showOldLetter && (
             <motion.div
@@ -143,7 +139,6 @@ const FutureLetter = ({ childId, backendUrl }) => {
           )}
         </AnimatePresence>
 
-        {/* Front Plate (the V shape cover) */}
         <div
           className="absolute bottom-0 w-full h-[180px] bg-[#f0f2ea] z-20 border-t border-white/50 shadow-[-5px_-5px_20px_rgba(0,0,0,0.02)]"
           style={{
@@ -152,7 +147,6 @@ const FutureLetter = ({ childId, backendUrl }) => {
           }}
         ></div>
 
-        {/* Top Flap */}
         <motion.div
           animate={{
             rotateX: isLocked || isAnimating || showOldLetter ? 180 : 0,
@@ -168,7 +162,6 @@ const FutureLetter = ({ childId, backendUrl }) => {
         />
       </div>
 
-      {/* Actions */}
       <div className="mt-12 w-full flex justify-center">
         {!isLocked ? (
           !showOldLetter ? (

@@ -7,7 +7,6 @@ import { AppContext } from "../context/AppContext";
 import ChildHome from "../pages/ChildHome";
 import LuscherTest from "../pages/LuscherTest";
 
-// ---------------- MOCKS ----------------
 vi.mock("axios");
 
 const mockNavigate = vi.fn();
@@ -21,7 +20,6 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-// ---------------- GLOBAL MOCKS ----------------
 beforeEach(() => {
   globalThis.IntersectionObserver = class {
     observe() {}
@@ -47,14 +45,12 @@ beforeEach(() => {
   };
 });
 
-// ---------------- CONTEXT ----------------
 const mockContext = {
   backendUrl: "http://localhost:4000",
   setUserData: vi.fn(),
   setIsLoggedin: vi.fn(),
 };
 
-// ---------------- HELPERS ----------------
 const renderPage = () =>
   render(
     <AppContext.Provider value={mockContext}>
@@ -67,9 +63,6 @@ const renderPage = () =>
 const renderLuscher = (ui) =>
   render(<AppContext.Provider value={mockContext}>{ui}</AppContext.Provider>);
 
-// ======================================================
-// 🧠 CHILD HOME TESTS
-// ======================================================
 describe("ChildHome page (ADVANCED)", () => {
   it("shows loading initially", () => {
     renderPage();
@@ -136,10 +129,6 @@ describe("ChildHome page (ADVANCED)", () => {
     expect(mockContext.backendUrl).toBe("http://localhost:4000");
   });
 
-  // ======================================================
-  // 🔥 NEW FUNCTIONAL TESTS
-  // ======================================================
-
   it("navigates when assistant is clicked", async () => {
     axios.get
       .mockResolvedValueOnce({ data: { child: {} } })
@@ -186,9 +175,6 @@ describe("ChildHome page (ADVANCED)", () => {
   });
 });
 
-// ======================================================
-// 🎨 LUSCHER TEST
-// ======================================================
 describe("LuscherTest (COVERAGE)", () => {
   beforeEach(() => {
     axios.post.mockReset();

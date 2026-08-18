@@ -1,6 +1,5 @@
 import Test from "../models/Test.js";
 
-// Отримати тест PSDQ
 export const getPSDQTest = async (req, res) => {
   try {
     const test = await Test.findOne({ name: "PSDQ" });

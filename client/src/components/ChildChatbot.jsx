@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
 const ChildChatbotComponent = () => {
-  // Прибрано невикористаний childId
   const [messages, setMessages] = useState([
     {
       name: "Bot",
@@ -35,7 +34,6 @@ const ChildChatbotComponent = () => {
       const data = await res.json();
       setMessages((prev) => [...prev, { name: "Bot", message: data.answer }]);
     } catch {
-      // Прибрано невикористаний (err)
       setMessages((prev) => [
         ...prev,
         {

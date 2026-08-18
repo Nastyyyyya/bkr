@@ -1,18 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar"; // Імпортуємо ваш навбар
+import Navbar from "../components/Navbar";
 
 const TestStart = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Навбар зверху */}
       <Navbar />
 
-      {/* Основний контент */}
       <main className="flex-grow flex items-center justify-center p-6">
-        {/* Контейнер з контентом */}
         <div className="max-w-2xl w-full bg-[#F3F0E8] p-10 md:p-20 rounded-[40px] shadow-sm text-center border border-gray-100 transition-all">
           <h1 className="text-3xl md:text-5xl font-bold mb-8 text-[#2d3422] leading-tight">
             PSDQ – Тест для батьків
@@ -24,7 +21,6 @@ const TestStart = () => {
             Оцінюйте свою поведінку за шкалою від 1 до 5:
           </p>
 
-          {/* Легенда шкали */}
           <div className="flex justify-center gap-8 mb-12 text-sm md:text-base">
             <div className="flex flex-col items-center">
               <span className="text-3xl font-bold text-[#354024]">1</span>

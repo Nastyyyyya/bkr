@@ -37,7 +37,6 @@ const Garden = ({
     currentMood === "sad" || currentMood === "tired" || currentMood === "angry";
   const isAngry = currentMood === "angry";
 
-  // 📌 Вибір дерева залежно від етапу
   const treeImages = [null, tree1, tree2, tree3];
   const treeSrc = treeImages[treeStage] || null;
 
@@ -61,12 +60,10 @@ const Garden = ({
           />
         ))}
 
-      {/* 🌳 ДЕРЕВО */}
       {treeSrc && (
         <img src={treeSrc} alt="Tree" className={`tree stage-${treeStage}`} />
       )}
 
-      {/* 🌸 КВІТИ */}
       {Array.from({ length: Math.min(flowers, 10) }).map((_, i) => {
         const maxFlowers = 10;
         const start = 5;

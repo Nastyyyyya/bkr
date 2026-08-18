@@ -13,9 +13,9 @@ const luscherResultSchema = new mongoose.Schema(
     },
     selection1: { type: [String], required: true },
     selection2: { type: [String], required: true },
-    computedCodes: { type: [String], default: [] }, // Додано для збереження результатів обчислень
+    computedCodes: { type: [String], default: [] },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const LuscherResult = mongoose.model("LuscherResult", luscherResultSchema);

@@ -5,7 +5,6 @@ import React, { useContext } from "react";
 
 import AppContextProvider, { AppContext } from "../context/AppContext";
 
-// ---------------- MOCKS ----------------
 vi.mock("axios");
 
 vi.mock("react-toastify", () => ({
@@ -16,7 +15,6 @@ vi.mock("react-toastify", () => ({
 
 import { toast } from "react-toastify";
 
-// ---------------- TEST CONSUMER ----------------
 const TestComponent = () => {
   const ctx = useContext(AppContext);
   return (
@@ -27,7 +25,6 @@ const TestComponent = () => {
   );
 };
 
-// ---------------- RENDER ----------------
 const renderWithProvider = () =>
   render(
     <AppContextProvider>
@@ -35,7 +32,6 @@ const renderWithProvider = () =>
     </AppContextProvider>,
   );
 
-// ---------------- TESTS ----------------
 describe("AppContext", () => {
   beforeEach(() => {
     vi.clearAllMocks();

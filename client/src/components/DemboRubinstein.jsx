@@ -86,7 +86,6 @@ const DemboRubinstein = ({ childId, backendUrl }) => {
               {scale.label}
             </span>
 
-            {/* Висота змінена з h-80 на h-64 */}
             <div className="relative h-64 w-16 bg-white rounded-full border border-[#2c4832]/10 shadow-inner flex flex-col items-center justify-between py-6">
               <span
                 className="text-3xl z-10 select-none filter drop-shadow-sm"

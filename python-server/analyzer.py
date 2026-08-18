@@ -25,7 +25,6 @@ def perform_deep_analysis(data):
         "alerts": []
     }
 
-    # --- 1. ТРЕКЕР НАСТРОЮ ---
     moods = [m.get('mood', 0) for m in data.get('mood_history', [])]
     if moods:
         avg_mood = np.mean(moods)
@@ -37,7 +36,6 @@ def perform_deep_analysis(data):
             "desc": "Середній рівень задоволеності дитини днем. Показник вище 3.5 вважається позитивним."
         }
 
-    # --- 2. ТРИВОЖНІСТЬ (Anxiety Meter) ---
     anxiety = [a.get('level', 0) for a in data.get('anxiety_history', [])]
     if anxiety:
         last_a = anxiety[-1]
@@ -51,7 +49,6 @@ def perform_deep_analysis(data):
         if status != "Норма":
             results["parent_advice"].append(f"По тривожності: {get_advice('anxiety', status, last_a)}")
 
-    # --- 3. САМООЦІНКА (Dembo-Rubinstein) ---
     dembo = data.get('dembo_history', [])
     if dembo:
         latest = dembo[-1].get('scales', {})
@@ -65,7 +62,6 @@ def perform_deep_analysis(data):
                 "desc": "Як дитина оцінює свої можливості порівняно з іншими."
             }
 
-    # --- 4. ПСИХОЛОГІЧНІ ТРУДНОЩІ (SDQ) ---
     sdq = data.get('sdq_history', [])
     if sdq:
         score = sdq[-1].get('scores', {}).get('total', 0)
@@ -79,7 +75,6 @@ def perform_deep_analysis(data):
         if score > 17:
             results["parent_advice"].append(get_advice("sdq", "Високий", score))
 
-    # --- 5. УВАГА ТА КОНТРОЛЬ (Go/No-Go) ---
     gonogo = data.get('gonogo_history', [])
     if gonogo:
         acc = [g.get('accuracy', 0) for g in gonogo]

@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import ChildrenAnxietyMeter from "../components/ChildrenAnxietyMeter";
 
-// ---------------- MOCK fetch ----------------
 beforeEach(() => {
   vi.clearAllMocks();
 
@@ -14,7 +13,6 @@ beforeEach(() => {
   );
 });
 
-// ---------------- HELPERS ----------------
 const renderComponent = (props = {}) =>
   render(
     <ChildrenAnxietyMeter
@@ -24,7 +22,6 @@ const renderComponent = (props = {}) =>
     />,
   );
 
-// ---------------- TESTS ----------------
 describe("ChildrenAnxietyMeter", () => {
   it("renders component correctly", () => {
     renderComponent();
@@ -89,7 +86,6 @@ describe("ChildrenAnxietyMeter", () => {
 
     fireEvent.click(screen.getByText("10"));
 
-    // не повинно змінити стан (залишається success)
     expect(screen.getByText(/твій стан записано/i)).toBeInTheDocument();
   });
 });
